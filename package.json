@@ -21,7 +21,9 @@
   },
   "homepage": "https://github.com/AnZuev/blockchain-energy-hack#readme",
   "dependencies": {
-    "ethereumjs-testrpc": "^6.0.3",
+    "koa": "^2.5.0",
+    "koa-router": "^7.4.0",
+    "telegraf": "^3.18.0",
     "truffle": "^4.0.6",
     "web3": "^0.20.1"
   }

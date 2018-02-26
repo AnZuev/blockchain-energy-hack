@@ -1,0 +1,21 @@
+{
+  "telegram_bot":{
+    "token": "540347338:AAE8MpMviMB-Q2aY9NclpG6F8iGJznAFpWw",
+    "alias": "p2p_energy_network_bot"
+  },
+  "web_server": {
+    "hostname": "",
+    "port": "5555"
+  },
+  "ethereum":{
+    "smart_contract_address": "0xe16f391e860420e65c659111c9e1601c0f8e2818",
+    "node":{
+      "protocol": "http",
+      "host": "10.91.42.92",
+      "port": 7545
+    },
+    "observer":{
+
+    }
+  }
+}
