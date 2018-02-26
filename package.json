@@ -1,0 +1,28 @@
+{
+  "name": "blockchain-energy-hack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnZuev/blockchain-energy-hack.git"
+  },
+  "keywords": [
+    "blockchain",
+    "ethereum"
+  ],
+  "author": "Anton Zuev, Sonya Reznikova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnZuev/blockchain-energy-hack/issues"
+  },
+  "homepage": "https://github.com/AnZuev/blockchain-energy-hack#readme",
+  "dependencies": {
+    "ethereumjs-testrpc": "^6.0.3",
+    "truffle": "^4.0.6",
+    "web3": "^0.20.1"
+  }
+}
