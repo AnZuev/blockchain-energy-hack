@@ -15,7 +15,7 @@
 require('./telegram_bot/index');
 
 // start web-server
-require('./web_ui/index');
+require('./web/backend/index');
 
 
 
