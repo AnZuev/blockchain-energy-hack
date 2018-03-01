@@ -27,7 +27,7 @@ module.exports = () => {
         let abi = require("./build/contracts/CoreContract.json");
 
         let address = config.ethereum.smart_contract_address;
-        contract = (new web3.eth.contract(abi)).at(address);
+        contract = new web3.eth.contract(abi, address);
         console.log("Core module has been started");
         return contract
     }

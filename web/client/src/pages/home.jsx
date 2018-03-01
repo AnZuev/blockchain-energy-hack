@@ -29,7 +29,7 @@ class HomePage extends React.Component {
         let json_response = await response.json();
         let contract_abi = json_response.result.contract.abi;
         let contract_address = json_response.result.address;
-        window.contract = new web3.eth.contract(contract_abi);
+        window.contract = web3.eth.contract(contract_abi);
         window.contract = window.contract.at(contract_address);
         console.log("Contract has been loaded");
         console.log(window.contract)
@@ -46,7 +46,7 @@ class HomePage extends React.Component {
         await this.load_contract_abi();
         await this.update();
         window.homepage = this;
-        HomePage.check_user_existence_on_smart_contract()
+        await HomePage.check_user_existence_on_smart_contract()
     }
 
     async update(){
@@ -85,12 +85,12 @@ class HomePage extends React.Component {
         return false
     }
 
-    static check_user_existence_on_smart_contract(){
+    static async check_user_existence_on_smart_contract(){
         // true if there is a user
         // otherwise false
         if (HomePage.check_metamask_installation() && HomePage.check_network_id()){
             //TODO: load data from smart contract
-            let result =  window.contract.checkUserExistence.call();
+            let result = await window.contract.checkUserExistence();
             console.log(result);
             return true
         }
