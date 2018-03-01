@@ -5,7 +5,7 @@ contract CoreContract {
     struct Peer {
         string typeOfUser;
         uint balance;
-        uint usualConsumption; // TODO: change to mapping
+        mapping (uint => uint) usualConsumption; // timestamp => consumption
     }
 
     // 5-minute slot
@@ -28,6 +28,8 @@ contract CoreContract {
         uint endTime;
     }
 
+    mapping (uint => address) public secretNumbersTG;
+
     mapping (address => Peer) public users;
     mapping (uint => Slot[]) public consumptionDB; // uint = timestamp
 
@@ -39,12 +41,20 @@ contract CoreContract {
     address private observer; // to listen for new offers
 
 
+    function addNewSecretNum(uint number, address adr) public {
+        secretNumbersTG[number] = adr;
+    }
+
+    function getAddress(uint number) public returns(address){
+        return secretNumbersTG[number];
+    }
+
     function checkUserCons(address user, uint offerId) public returns(bool) {
         uint startTime = offers[offerId].startTime;
         uint endTime = offers[offerId].endTime;
         uint promisedReduct = getPromisedPower(offerId, user);
-        uint usualCons = getUserUsualCons(user);
         for (startTime; startTime < endTime; startTime++) {
+            uint usualCons = getUserUsualCons(user, startTime);
             uint actual = getConsumptionPerUser(startTime, user);
             if (actual <= (usualCons - promisedReduct)) continue;
             else {
@@ -96,6 +106,10 @@ contract CoreContract {
             promisingUsers.push(consumptionPromises[id][i].promisingUser);
         }
         return promisingUsers;
+    }
+
+    function getNumPromisingUsers(uint id) public returns(uint) {
+        return consumptionPromises[id].length;
     }
 
     function getPromisedPower(uint id, address user) public returns(uint) {
@@ -161,8 +175,12 @@ contract CoreContract {
     }
 
 
-    function addNewUser(address userAddress, string typeOfUser, uint balance, uint consumption) public {
-        users[userAddress] = Peer({typeOfUser: typeOfUser, balance: balance, usualConsumption: consumption});
+    // usual consumption is an array with all timestamps for the day (24 hours) with typical consumption of user
+    function addNewUser(address userAddress, string typeOfUser, uint balance, uint[] usualConsumption) public {
+        users[userAddress] = Peer({typeOfUser: typeOfUser, balance: balance});
+        for (uint i = 0; i < usualConsumption.length; i++) {
+            users[userAddress].usualConsumption[i] = usualConsumption[i];
+        }
     }
 
     function addNewSlot(address userAddress, uint consumption, uint currentTime) public {
@@ -173,8 +191,8 @@ contract CoreContract {
         return users[adr].balance;
     }
 
-    function getUserUsualCons(address adr) public returns(uint) {
-        return users[adr].usualConsumption;
+    function getUserUsualCons(address adr, uint timestamp) public returns(uint) {
+        return users[adr].usualConsumption[timestamp];
     }
 
     function getConsumptionPerUser(uint timestamp, address userAdr) public returns(uint) {
