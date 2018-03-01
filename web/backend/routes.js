@@ -13,15 +13,16 @@
 const Router = require('koa-router');
 const contract = require("../../core/index")();
 const memoryStorage = require("../../storage/memory_storage");
+const config = require("../../config.json");
 
 let router = new Router();
 
 
-router.get('/', async (ctx, next) => {
+router.get('/', async (ctx) => {
     await ctx.render("home", { title : 'Home Page' })
 });
 
-router.get('/api/get_user', (ctx, next) => {
+router.get('/api/get_user', (ctx) => {
     let user_id = ctx.request.query.address;
 
     let user = memoryStorage.getUser(user_id);
@@ -32,7 +33,7 @@ router.get('/api/get_user', (ctx, next) => {
     }
 });
 
-router.post("/api/add_new_user", (ctx, next) => {
+router.post("/api/add_new_user", (ctx) => {
     let data = ctx.request.body;
     let user = memoryStorage.getUser(data.address);
     if(user){
@@ -45,6 +46,17 @@ router.post("/api/add_new_user", (ctx, next) => {
         };
         memoryStorage.setUser(data.address, user);
         ctx.body = {error: false, code: 200, result: user};
+    }
+});
+
+router.get('/api/get_contract', (ctx)=>{
+    ctx.body = {
+        error: false,
+        code: 200,
+        result: {
+            contract: require("../../core/build/contracts/CoreContract.json"),
+            address: config.ethereum.smart_contract_address
+        }
     }
 });
 

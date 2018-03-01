@@ -4,7 +4,7 @@ module.exports = {
         development: {
             host: config.ethereum.node.host,
             port: config.ethereum.node.port,
-            network_id: '*'
+            network_id: config.ethereum.node.network_id
         }
     }
 };

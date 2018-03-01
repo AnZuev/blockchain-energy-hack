@@ -30,7 +30,7 @@ class OngoingOffers extends React.Component {
 
         if(this.props.is_loading){
             return (
-                <div className="uk-child-width-expand@m uk-text-center " uk-grid="">
+                <div className="uk-child-width-expand@m uk-text-center ">
                     <div uk-spinner=""></div>
                     <p className="uk-padding uk-text-muted">Future offers that you have accepted are being loaded...</p>
                 </div>
@@ -38,7 +38,7 @@ class OngoingOffers extends React.Component {
         }
         if(this.state.no_offers){
             return (
-                <div className="uk-child-width-expand@m uk-text-center " uk-grid="">
+                <div className="uk-child-width-expand@m uk-text-center ">
                     <p className="uk-padding uk-text-muted">You don't have any on-going offers yet.</p>
                 </div>
             )
@@ -47,6 +47,7 @@ class OngoingOffers extends React.Component {
             // TODO: how to computer expected reward (depends on smart contract)
             this.props.offers.map((item) => {
                 let t = <Offer
+                    key={item.id}
                     id={item.id}
                     from={item.from}
                     to={item.to}

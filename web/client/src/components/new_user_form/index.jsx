@@ -69,7 +69,6 @@ class NewUserForm extends React.Component {
         if(json.error){
             // handle error
         }else{
-            console.log("I am here2")
             await window.homepage.update()
         }
         event.persist()

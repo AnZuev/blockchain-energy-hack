@@ -30,7 +30,7 @@ class HistoryOffers extends React.Component {
 
         if(this.props.is_loading){
             return (
-                <div className="uk-child-width-expand@m uk-text-center " uk-grid="">
+                <div className="uk-child-width-expand@m uk-text-center ">
                     <div uk-spinner=""></div>
                     <p className="uk-padding uk-text-muted">History is being loaded...</p>
                 </div>
@@ -38,7 +38,7 @@ class HistoryOffers extends React.Component {
         }
         if(this.state.no_offers){
             return (
-                <div className="uk-child-width-expand@m uk-text-center " uk-grid="">
+                <div className="uk-child-width-expand@m uk-text-center ">
                     <p className="uk-padding uk-text-muted">You haven't finished any offer yet. May be it's time to choose one?</p>
                 </div>
             )
@@ -46,6 +46,7 @@ class HistoryOffers extends React.Component {
             let offers = [];
             this.props.offers.map((item) => {
                 let t = <Offer
+                    key={item.id}
                     id={item.id}
                     from={item.from}
                     to={item.to}

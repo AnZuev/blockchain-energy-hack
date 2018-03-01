@@ -40,15 +40,17 @@ contract CoreContract {
 
     address private observer; // to listen for new offers
 
-
+    // for telegram shit (by Sonya)
     function addNewSecretNum(uint number, address adr) public {
         secretNumbersTG[number] = adr;
     }
 
-    function getAddress(uint number) public returns(address){
+    //for telegram shit (by Sonya)
+    function getAddress(uint number) public view returns(address){
         return secretNumbersTG[number];
     }
 
+    // check user consumption
     function checkUserCons(address user, uint offerId) public returns(bool) {
         uint startTime = offers[offerId].startTime;
         uint endTime = offers[offerId].endTime;
@@ -84,7 +86,7 @@ contract CoreContract {
     }
 
     // returns array of offer ids
-    function getAvailableOffers(uint currentTime) public returns(uint[]){
+    function getAvailableOffers(uint currentTime) public view returns(uint[]){
         uint[] availableOffers;
         for (uint i = 0; i <= numberOfOffers; i++) {
             if (offers[i].startTime > currentTime) {
@@ -100,7 +102,7 @@ contract CoreContract {
 
     // promise getters
 
-    function getPromisingUsers(uint id) public returns(address[]) {
+    function getPromisingUsers(uint id) public view returns(address[]) {
         address[] promisingUsers;
         for (uint i = 0; i < consumptionPromises[id].length; i++) {
             promisingUsers.push(consumptionPromises[id][i].promisingUser);
@@ -108,11 +110,11 @@ contract CoreContract {
         return promisingUsers;
     }
 
-    function getNumPromisingUsers(uint id) public returns(uint) {
+    function getNumPromisingUsers(uint id) public view returns(uint) {
         return consumptionPromises[id].length;
     }
 
-    function getPromisedPower(uint id, address user) public returns(uint) {
+    function getPromisedPower(uint id, address user) public view returns(uint) {
         ConsPromise[] promises = consumptionPromises[id];
         for (uint i = 0; i < promises.length; i++) {
             if (promises[i].promisingUser == user) return promises[i].promisedPower;
@@ -120,7 +122,7 @@ contract CoreContract {
         return 0;
     }
 
-    function getCurrentlyPromisedPower(uint id) public returns(uint) {
+    function getCurrentlyPromisedPower(uint id) public view returns(uint) {
         uint sumPromises;
         ConsPromise[] promises = consumptionPromises[id];
         for (uint i = 0; i < promises.length; i++) {
@@ -131,31 +133,31 @@ contract CoreContract {
 
 
     // offer getters
-    function getNumOffers() public returns(uint) {
+    function getNumOffers() public view returns(uint) {
         return numberOfOffers;
     }
 
-    function getOfferAuthor(uint id) public returns(address) {
+    function getOfferAuthor(uint id) public view returns(address) {
         return offers[id].initiator;
     }
 
-    function getOfferPower(uint id) public returns(uint) {
+    function getOfferPower(uint id) public view returns(uint) {
         return offers[id].neededPower;
     }
 
-    function getOfferReward(uint id) public returns(uint) {
+    function getOfferReward(uint id) public view returns(uint) {
         return offers[id].rewardPerKw;
     }
 
-    function getOfferStart(uint id) public returns(uint) {
+    function getOfferStart(uint id) public view returns(uint) {
         return offers[id].startTime;
     }
 
-    function getOfferEnd(uint id) public returns(uint) {
+    function getOfferEnd(uint id) public view returns(uint) {
         return offers[id].endTime;
     }
 
-    function getOfferInfo(uint id) public returns (address, uint, uint, uint, uint) {
+    function getOfferInfo(uint id) public view returns (address, uint, uint, uint, uint) {
         return (offers[id].initiator, offers[id].neededPower, offers[id].rewardPerKw, offers[id].startTime, offers[id].endTime);
     }
 
@@ -165,7 +167,7 @@ contract CoreContract {
     }
 
 
-    function getCurrentOverallConsumption(uint currentTime) returns(uint) {
+    function getCurrentOverallConsumption(uint currentTime) view returns(uint) {
         Slot[] slots = consumptionDB[currentTime];
         uint overallConsumption;
         for (uint i = 0; i < slots.length;i++) {
@@ -174,6 +176,12 @@ contract CoreContract {
         return overallConsumption;
     }
 
+
+
+    function checkUserExistence() public view returns(bool){
+        Peer user = users[msg.sender];
+        return (keccak256(user.typeOfUser) == keccak256(""));
+    }
 
     // usual consumption is an array with all timestamps for the day (24 hours) with typical consumption of user
     function addNewUser(address userAddress, string typeOfUser, uint balance, uint[] usualConsumption) public {
@@ -187,22 +195,20 @@ contract CoreContract {
         consumptionDB[currentTime].push(Slot(userAddress, consumption));
     }
 
-    function getUserBalance(address adr) public returns(uint) {
+    function getUserBalance(address adr) public view returns(uint) {
         return users[adr].balance;
     }
 
-    function getUserUsualCons(address adr, uint timestamp) public returns(uint) {
+    function getUserUsualCons(address adr, uint timestamp) public view returns(uint) {
         return users[adr].usualConsumption[timestamp];
     }
 
-    function getConsumptionPerUser(uint timestamp, address userAdr) public returns(uint) {
+    function getConsumptionPerUser(uint timestamp, address userAdr) public view returns(uint) {
         Slot[] slotsPerTime = consumptionDB[timestamp];
         for (uint i = 0; i < slotsPerTime.length; i++) {
             if (slotsPerTime[i].user == userAdr) return slotsPerTime[i].consumption;
         }
     }
-
-
 
 
 }

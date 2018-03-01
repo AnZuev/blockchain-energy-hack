@@ -24,10 +24,10 @@ module.exports = () => {
         let web3 = new Web3(new Web3.providers.HttpProvider(node_address));
 
         // TODO: insert path to contract.json
-        let abi = require("./build/contracts/Migrations.json");
+        let abi = require("./build/contracts/CoreContract.json");
 
         let address = config.ethereum.smart_contract_address;
-        contract = new web3.eth.contract(abi, address);
+        contract = (new web3.eth.contract(abi)).at(address);
         console.log("Core module has been started");
         return contract
     }

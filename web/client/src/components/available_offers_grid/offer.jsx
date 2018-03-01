@@ -17,7 +17,8 @@ class Offer extends React.Component {
     }
 
     render () {
-        return (<div className="uk-width-1-3">
+        return (
+            <div>
                     <div className="uk-card uk-card-hover uk-card-default uk-card-body uk-clearfix">
                         <h3 className="uk-card-title">#{this.props.id}</h3>
                         <p>

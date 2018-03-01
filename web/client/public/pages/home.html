@@ -7,9 +7,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/css/uikit.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js"></script>
-    <script src="/js/web3.min.js"></script>
+
 </head>
 <body>
     <div class="uk-offcanvas-content" id="app">
@@ -17,6 +15,10 @@
     </div>
 
 
+
+
+
+    <script src="/js/web3.min.js"></script>
     <script type="text/javascript">
         if(typeof window.web3 !== "undefined" && typeof window.web3.currentProvider !== "undefined") {
             window.web3_instance = new Web3(window.web3.currentProvider);
@@ -24,8 +26,11 @@
             window.web3_instance = null
         }
     </script>
-
     <script src="/js/home-bundle.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js"></script>
 
 </body>
 </html>
