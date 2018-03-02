@@ -4,6 +4,8 @@ import NewUserForm from '../components/new_user_form/index.jsx'
 import Header from '../components/header/index.jsx'
 import Error from "../components/error/index.jsx"
 import HomePageContent from "../components/homepage_content/index.jsx"
+import CreateOfferForm from "../components/create_offer_form/index.jsx"
+
 
 
 class HomePage extends React.Component {
@@ -31,7 +33,6 @@ class HomePage extends React.Component {
         let contract_abi = json_response.result.contract.abi;
         let contract_address = json_response.result.address;
         window.contract = window.web3.eth.contract(contract_abi).at(contract_address);
-        console.log(await to_promise(window.contract.getOwner));
         console.log("Contract has been loaded");
     }
 
@@ -70,7 +71,9 @@ class HomePage extends React.Component {
             checks.is_a_new_user_on_smart_contract = is_a_new_user_on_smart_contract;
             let user_data = this.state.user_data;
             user_data.from_backend = user_info.result;
-
+            let wei = await to_promise(window.web3.eth.getBalance, window.defaultAccount);
+            user_data.balance = window.web3.fromWei(wei.toString(), 'ether');
+            user_data.address = window.defaultAccount;
             await this.setStateAsync({
                 checks: checks,
                 user_data: user_data
@@ -118,6 +121,8 @@ class HomePage extends React.Component {
     }
 
     render () {
+
+
         if(!this.state.checks.is_metamask_installed){
             return (
                 <div>
@@ -157,26 +162,54 @@ class HomePage extends React.Component {
         }
         if (this.state.user_data.from_backend){
             if(this.state.user_data.from_backend.telegram){
-                return(
-                    <div>
-                        <Header
-                            is_a_new_user={this.state.checks.is_a_new_user_on_server}
-                            is_telegram_connected={this.state.user_data.from_backend.telegram !== null}
-                            telegram_alias={this.state.user_data.from_backend.telegram.alias}
-                        />
-                        <HomePageContent/>
-                    </div>
-                )
+                if(this.state.show_create_offer){
+                    return(
+                        <div>
+                            <Header
+                                is_a_new_user={this.state.checks.is_a_new_user_on_server}
+                                is_telegram_connected={this.state.user_data.from_backend.telegram !== null}
+                                telegram_alias={this.state.user_data.from_backend.telegram.alias}
+                            />
+                            <CreateOfferForm/>
+                        </div>
+                    )
+                }else{
+                    return (
+                        <div>
+                            <Header
+                                is_a_new_user={this.state.checks.is_a_new_user_on_server}
+                                is_telegram_connected={this.state.user_data.from_backend.telegram !== null}
+                                telegram_alias={this.state.user_data.from_backend.telegram.alias}
+                            />
+                            <HomePageContent/>
+                        </div>
+                    )
+                }
+
             }else{
-                return(
-                    <div>
-                        <Header
-                            is_a_new_user={this.state.checks.is_a_new_user_on_server}
-                            is_telegram_connected={this.state.user_data.from_backend.telegram !== null}
-                        />
-                        <HomePageContent/>
-                    </div>
-                )
+                if(this.state.show_create_offer){
+                    return(
+                        <div>
+                            <Header
+                                is_a_new_user={this.state.checks.is_a_new_user_on_server}
+                                is_telegram_connected={this.state.user_data.from_backend.telegram !== null}
+                                telegram_alias={this.state.user_data.from_backend.telegram.alias}
+                            />
+                            <CreateOfferForm/>
+                        </div>
+                    )
+                }else{
+                    return(
+                        <div>
+                            <Header
+                                is_a_new_user={this.state.checks.is_a_new_user_on_server}
+                                is_telegram_connected={this.state.user_data.from_backend.telegram !== null}
+                            />
+                            <HomePageContent/>
+                        </div>
+                    )
+                }
+
             }
         }
         return <div>Return </div>

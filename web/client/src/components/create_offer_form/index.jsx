@@ -29,31 +29,6 @@ class CreateOfferForm extends React.Component {
 
     }
     async handleSubmit(event){
-        let type = this.data.type;
-        let title = this.data.title;
-        this.setState({
-            errors:{
-                type: "",
-                title: ""
-            }
-        });
-
-        if (['consumer', 'factory'].indexOf(type) < 0){
-            // wrong type assigned
-            this.setState({
-                errors:{
-                    type: "Please, select one of the options above!"
-                }
-            })
-        }
-        if(title.length < 2){
-            // title is too short
-            this.setState({
-                errors:{
-                    title: "Please, give us something meaningful!"
-                }
-            })
-        }
 
         // TODO: allow user to set his power consumption
         let usualConsumption = [
@@ -104,22 +79,28 @@ class CreateOfferForm extends React.Component {
                         <fieldset className="uk-fieldset">
 
                             <legend className="uk-legend">New Offer</legend>
-
                             <div className="uk-margin">
-                                <input className="uk-input" name = '' type="text" placeholder="How to name you?" onChange={this.handleInputChange}/>
-                                <span className="uk-text-danger">{this.state.errors.title}</span>
+                                <p>Balance: {window.homepage.state.user_data.balance}</p>
+                            </div>
+                            <div className="uk-margin">
+                                <span>Power:</span>
+                                <input className="uk-input" name = 'power' type="number" onChange={this.handleInputChange}/>
+                            </div>
+                            <div className="uk-margin">
+                                <span>Reward: </span>
+                                <input className="uk-input" name = 'power' type="number" onChange={this.handleInputChange}/>
+                            </div>
+                            <div className="uk-margin">
+                                <span>Start time:</span>
+                                <input className="uk-input" name = 'from' type="number" onChange={this.handleInputChange}/>
+                            </div>
+                            <div className="uk-margin">
+                                <span>Finish time:</span>
+                                <input className="uk-input" name = 'to' type="number" onChange={this.handleInputChange}/>
                             </div>
 
                             <div className="uk-margin">
-                                <select className="uk-select" name = 'type' onChange={this.handleInputChange}>
-                                    <option value="consumer">Ordinary User</option>
-                                    <option value="factory">Factory</option>
-                                </select>
-                                <span className="uk-text-danger">{this.state.errors.type}</span>
-                            </div>
-
-                            <div className="uk-margin">
-                                <div className="uk-button uk-button-primary uk-align-right" onClick={this.handleSubmit}>Let's start</div>
+                                <div className="uk-button uk-button-primary uk-align-right" onClick={this.handleSubmit}>Create</div>
                                 <div className="uk-clearfix"></div>
                             </div>
 
@@ -131,4 +112,4 @@ class CreateOfferForm extends React.Component {
     }
 }
 
-export default NewUserForm
+export default CreateOfferForm

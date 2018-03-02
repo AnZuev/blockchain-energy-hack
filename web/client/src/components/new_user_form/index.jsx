@@ -65,14 +65,14 @@ class NewUserForm extends React.Component {
         ];
 
         try{
-            await to_promise(window.contract.addNewUser, type, usualConsumption);
+            await to_promise(window.contract.addNewUser, type, usualConsumption, {from: window.defaultAccount, gas: 3000000});
             console.log("User has been added to smart contract!");
             let response = await fetch("/api/add_new_user", {
                 method: 'POST',
                 body: JSON.stringify({
                     type: type,
                     title: title,
-                    address: window.web3.eth.defaultAccount
+                    address: window.defaultAccount
                 }),
                 headers: new Headers()
             });
