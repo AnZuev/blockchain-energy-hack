@@ -88,11 +88,25 @@ class HomePageContent extends React.Component {
     }
     async get_available_offers(){
         let loading = this.state.loading;
+        let data = this.state.data;
         loading.available_offers = true;
         await this.setStateAsync({loading: loading});
+
+        try{
+            let available_offers_ids = await to_promise(window.contract.getAvailableOffers, -1);
+            let available_offers = [];
+            console.info("Available offers loaded", available_offers);
+            available_offers_ids.map(async (item) => {
+                let offer = await to_promise(window.contract.getOfferInfo, item);
+                available_offers.push(offer);
+            })
+        }catch(err){
+            console.error("Error occurred while getting available offers");
+            console.error(err);
+        }
         //TODO: loading
         loading.available_offers = false;
-        await this.setStateAsync({loading: loading});
+        await this.setStateAsync({loading: loading, data: data});
     }
     async get_history(){
         let loading = this.state.loading;

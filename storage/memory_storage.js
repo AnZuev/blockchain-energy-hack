@@ -20,12 +20,12 @@ class MemoryStorage{
         this.users = {}
     }
 
-    setUser(userId, user){
-        this.users[userId] = user
+    setUser(address, user){
+        this.users[address] = user
     }
 
-    getUser(userId){
-        return this.users[userId]
+    getUser(address){
+        return this.users[address]
     }
 
 }

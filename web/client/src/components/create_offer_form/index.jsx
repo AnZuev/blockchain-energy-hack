@@ -10,19 +10,18 @@
 
 import React from 'react';
 
-class NewUserForm extends React.Component {
+class CreateOfferForm extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             errors:{
-                type: "",
-                title: ""
+
             }
         };
 
         this.data = {
-            type: 'consumer'
+
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -104,10 +103,10 @@ class NewUserForm extends React.Component {
                     <form>
                         <fieldset className="uk-fieldset">
 
-                            <legend className="uk-legend">It seems like your are a new user</legend>
+                            <legend className="uk-legend">New Offer</legend>
 
                             <div className="uk-margin">
-                                <input className="uk-input" name = 'title' type="text" placeholder="How to name you?" onChange={this.handleInputChange}/>
+                                <input className="uk-input" name = '' type="text" placeholder="How to name you?" onChange={this.handleInputChange}/>
                                 <span className="uk-text-danger">{this.state.errors.title}</span>
                             </div>
 

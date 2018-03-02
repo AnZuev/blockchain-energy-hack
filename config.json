@@ -8,15 +8,15 @@
     "port": "5555"
   },
   "ethereum":{
-    "smart_contract_address": "0x8cdaf0cd259887258bc13a92c0a6da92698644c0",
+    "smart_contract_address": "345ca3e014aaf5dca488057592ee47305d9b3e10",
     "node":{
       "protocol": "http",
-      "host": "10.91.42.92",
+      "host": "127.0.0.1",
       "port": 8545,
       "network_id": 5777
     },
     "observer":{
-
+        "address": "f17f52151EbEF6C7334FAD080c5704D77216b732"
     }
   }
 }
