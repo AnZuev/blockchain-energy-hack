@@ -12,6 +12,7 @@
 
 const config = require("../config.json");
 const contract = require("../core/index")();
+let libs = require("../etc/libs");
 
 var users = {};
 
@@ -46,30 +47,24 @@ bot.command('secret', (ctx) => {
 
 });
 
-bot.command('remind', () => {
+bot.command('remind', (ctx) => {
     setInterval( () => {
-        // check if the user has offers in the next hour and get the data
-        // use this data to remind the user
+        let currentOffer = getUserClosestOffer(users[ctx.from.id].secretNumber);
+        if (currentOffer !== undefined) {
 
+        }
     }, 10000);
 
 });
 
-function getUserClosestOffer(secretNumber) {
-    // go to contract and get user's promised offers - TODO: add the function to get user's closest offer
-    let offer = {'startTime': 100000, 'endTime': 110000, 'promisedPower': 10};
-    return offer;
+async function getUserClosestOffer(secretNumber) {
+    return await libs.to_promise(contract.TG_getClosestOffer, secretNumber, {from: global.observer_ethereum_address});
 }
 
-
-
-
-
-
-
-function checkIfUserHasConnected(secretNumber) {
-    // go to contract and see if the user is in secretNumbersTG - TODO: add the function
-    return Math.random() > 0.5;
+async function checkIfUserHasConnected(secretNumber) {
+    let result = await libs.to_promise(contract.checkIsUserHasConnected, secretNumber, {from: global.observer_ethereum_address});
+    if (result.toString() === 'true') return true;
+    else return false;
 }
 
 bot.startPolling();

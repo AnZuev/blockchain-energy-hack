@@ -38,6 +38,10 @@ contract CoreContract {
     mapping (uint => ConsPromise[]) public consumptionPromises;
     uint public numberOfOffers; // to track offer ids
 
+    // to map users to all the offers (ids) they've agreed to
+    mapping (address => uint[]) public userOffers;
+
+
     address public observer; // to listen for new offers
     address public owner; //just in case
     uint256 time;
@@ -76,6 +80,16 @@ contract CoreContract {
     //for telegram shit (by Sonya)
     function getAddress(uint number) public view returns(address){
         return secretNumbersTG[number];
+    }
+
+    //for telegram shit (by Sonya)
+    function checkIsUserHasConnected(uint number) public returns(bool) {
+        if (secretNumbersTG[number] != 0x0000000000000000000000000000000000000000) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     // check user consumption
@@ -133,6 +147,7 @@ contract CoreContract {
 
     function respondToOffer(uint id, address user, uint power) public {
         consumptionPromises[id].push(ConsPromise({promisingUser: user, promisedPower: power}));
+        userOffers[user].push(id);
     }
 
     // promise getters
@@ -165,6 +180,23 @@ contract CoreContract {
             sumPromises += promises[i].promisedPower;
         }
         return sumPromises;
+    }
+
+    function getUserClosestOffer(address user) public returns(uint start, uint end, uint promisedReduction) {
+        uint256 currentTime = getTime();
+        for (uint i = 0; i < userOffers[user].length; i++) {
+            if (offers[userOffers[user][i]].startTime - currentTime < 20) {
+                start = offers[userOffers[user][i]].startTime;
+                end = offers[userOffers[user][i]].endTime;
+                promisedReduction = consumptionPromises[userOffers[user][i]].promisedPower;
+            }
+        }
+    }
+
+    // a wrapper for telegram: calling getUserClosestOffer with a secret number
+    function TG_getClosestOffer(uint secretNumber) public returns(uint start, uint end, uint promisedReduction) {
+        address userAddress = secretNumbersTG[secretNumber];
+        return getUserClosestOffer(userAddress);
     }
 
 
