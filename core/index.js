@@ -19,15 +19,19 @@ module.exports = () => {
         console.log("Core module is being started...");
         const config = require("../config.json");
         const Web3 = require('web3');
-
+        let web3 = new Web3();
         let node_address = `${config.ethereum.node.protocol}://${config.ethereum.node.host}:${config.ethereum.node.port}`;
-        let web3 = new Web3(new Web3.providers.HttpProvider(node_address));
+
+        web3.setProvider(new web3.providers.HttpProvider(node_address));
 
         // TODO: insert path to contract.json
-        let abi = require("./build/contracts/CoreContract.json");
+        let abi = require("./build/contracts/CoreContract.json").abi;
 
         let address = config.ethereum.smart_contract_address;
-        contract = new web3.eth.contract(abi, address);
+        contract = web3.eth.contract(abi).at(address);
+
+        //web3.eth.defaultAccount = web3.eth.accounts[0];
+
         console.log("Core module has been started");
         return contract
     }

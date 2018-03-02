@@ -10,12 +10,18 @@
  * - github: @AnZuev
  */
 
+global.observer_ethereum_address = require("./config.json").ethereum.observer.address;
+
 
 // start bot
-require('./telegram_bot/index');
+//require('./telegram_bot/index');
 
 // start web-server
 require('./web/backend/index');
+
+// start time updating
+let timer = require('./etc/smart_contract_time_updater');
+timer.start();
 
 
 
