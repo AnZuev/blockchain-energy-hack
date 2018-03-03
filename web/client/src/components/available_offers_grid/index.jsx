@@ -15,9 +15,6 @@ import Offer from "./offer.jsx"
 class AvailableOffersGrid extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            no_offers: this.props.offers.length === 0
-        }
     }
 
     setStateAsync(state) {
@@ -28,26 +25,36 @@ class AvailableOffersGrid extends React.Component {
 
 
     render () {
-        let offers = [];
-        for(let i = 0; i < 5; i++){
-            let id = 100 + i;
-            let descr = `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-             sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-              erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.`;
+        console.log("Rendering available offers");
 
+        /*
+         initiator: offer_list[0],
+         neededPower: offer_list[1].toString(),
+         promisedPower: offer_list[2].toString(),
+         numOfPromisingUsers: offer_list[3].toString(),
+         reward: offer_list[4].toString(),
+         from: offer_list[5].toString(),
+         to: offer_list[6].toString(),
+         initiator_name: offer_list[7]
+         */
+        let offers = [];
+        this.props.offers.map((item) => {
+            console.log(item);
             let t = <Offer
-                id={id}
-                description={descr}
-                residual_power ={20}
-                total_power = {35}
-                number_of_users={2 + (i%4)*2}
-                from="25.02.2018 16:00"
-                to="25.02.2017 18:00"
-                total_reward={500}
-                key={id}
+                id={item.id.toString()}
+                initiator_name={item.initiator_name.toString()}
+                residual_power ={item.neededPower*1.2 - item.promisedPower}
+                total_power = {item.neededPower}
+                number_of_users={item.numOfPromisingUsers}
+                from={item.from}
+                to={item.to}
+                total_reward={item.reward}
+                key={item.id.toString()}
             />;
-            offers.push(t)
-        }
+            offers.push(t);
+        });
+        console.log(this.props);
+        console.log(offers);
         if(this.props.is_loading){
             return (
                 <div className="uk-child-width-expand@m uk-text-center " uk-grid="">
@@ -56,7 +63,7 @@ class AvailableOffersGrid extends React.Component {
                 </div>
             )
         }
-        if(this.state.no_offers){
+        if(this.props.offers.length === 0){
             return (
                 <div className="uk-grid uk-child-width-expand@m  uk-text-center" uk-grid="">
                     <p className="uk-padding uk-text-muted">Available offers are going to be here very soon...</p>

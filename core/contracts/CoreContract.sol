@@ -2,7 +2,13 @@ pragma solidity ^0.4.19;
 
 contract CoreContract {
 
+    event OfferCreated(
+        uint offer_id,
+        uint time
+    );
+
     struct Peer {
+        string name;
         string typeOfUser;
         uint balance;
         mapping (uint => uint) usualConsumption; // timestamp => consumption
@@ -49,7 +55,7 @@ contract CoreContract {
 
     function CoreContract() public{
         owner = msg.sender;
-        time = 25;
+        time = 0;
     }
 
 
@@ -65,7 +71,6 @@ contract CoreContract {
     function updateTime(uint256 nextTime) public returns (uint256){
         //require(msg.sender == observer);
         time = nextTime;
-        return time;
     }
 
     function getTime() public view returns (uint256){
@@ -117,15 +122,16 @@ contract CoreContract {
         }
     }
 
-    function addNewOffer(uint power, uint reward, uint startTime, uint endTime) public returns(uint){
+    // reward is actually an amount of ether that was sent by the user
+    // at this point ethereum platform guarantees that user
+    // returns an id of newly created offer
+    function addNewOffer(uint power, uint startTime, uint endTime) payable public{
         address initiator = msg.sender;
-        if (getUserBalance(initiator) < reward) return 0;
-        else {
-            numberOfOffers += 1;
-            users[initiator].balance = getUserBalance(initiator) - (reward);
-            offers[numberOfOffers] = Offer({initiator: initiator, neededPower: power, reward: reward, startTime: startTime, endTime: endTime});
-            return numberOfOffers;
-        }
+        uint reward = msg.value;
+        numberOfOffers = numberOfOffers + 1;
+        users[initiator].balance += reward;
+        offers[numberOfOffers] = Offer({initiator: initiator, neededPower: power, reward: reward, startTime: startTime, endTime: endTime});
+        OfferCreated(numberOfOffers, time);
     }
 
     // returns array of offer ids
@@ -182,22 +188,6 @@ contract CoreContract {
         return sumPromises;
     }
 
-    function getUserClosestOffer(address user) public returns(uint start, uint end, uint promisedReduction) {
-        uint256 currentTime = getTime();
-        for (uint i = 0; i < userOffers[user].length; i++) {
-            if (offers[userOffers[user][i]].startTime - currentTime < 20) {
-                start = offers[userOffers[user][i]].startTime;
-                end = offers[userOffers[user][i]].endTime;
-                promisedReduction = consumptionPromises[userOffers[user][i]].promisedPower;
-            }
-        }
-    }
-
-    // a wrapper for telegram: calling getUserClosestOffer with a secret number
-    function TG_getClosestOffer(uint secretNumber) public returns(uint start, uint end, uint promisedReduction) {
-        address userAddress = secretNumbersTG[secretNumber];
-        return getUserClosestOffer(userAddress);
-    }
 
 
     // offer getters
@@ -225,7 +215,10 @@ contract CoreContract {
         return offers[id].endTime;
     }
 
-    function getOfferInfo(uint id) public view returns (address initiator, uint neededPower, uint promisedPower, uint numOfPromisingUsers, uint reward, uint from, uint to) {
+    function getOfferInfo(uint id)
+    public
+    view
+    returns (address initiator, uint neededPower, uint promisedPower, uint numOfPromisingUsers, uint reward, uint from, uint to, string initiatorName) {
         promisedPower = getCurrentlyPromisedPower(id);
         numOfPromisingUsers = getPromisingUsers(id).length;
         initiator = offers[id].initiator;
@@ -233,6 +226,7 @@ contract CoreContract {
         reward = offers[id].reward;
         from = offers[id].startTime;
         to = offers[id].endTime;
+        initiatorName = users[initiator].name;
     }
 
 
@@ -252,9 +246,9 @@ contract CoreContract {
     }
 
     // usual consumption is an array with all timestamps for the day (24 hours) with typical consumption of user
-    function addNewUser(string typeOfUser, uint[] usualConsumption) public {
+    function addNewUser(string name, string typeOfUser, uint[] usualConsumption) public {
         address userAddress = msg.sender;
-        users[userAddress] = Peer({typeOfUser: typeOfUser, balance: 0});
+        users[userAddress] = Peer({typeOfUser: typeOfUser, balance: 0, name: name});
         for (uint i = 0; i < usualConsumption.length; i++) {
             users[userAddress].usualConsumption[i] = usualConsumption[i];
         }

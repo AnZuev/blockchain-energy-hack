@@ -29,37 +29,17 @@ class CreateOfferForm extends React.Component {
 
     }
     async handleSubmit(event){
-
-        // TODO: allow user to set his power consumption
-        let usualConsumption = [
-            4, 4, 4, 4, 4, 4,
-            5, 5, 5, 7, 7, 7,
-            7, 7, 4, 5, 4, 4,
-            4, 4, 3, 3, 2, 1
-        ];
-
+        let reward = this.data.reward;
+        let power = this.data.power;
+        let from = this.data.from;
+        let to = this.data.to;
+        console.log(this.data);
         try{
-            await to_promise(window.contract.addNewUser, type, usualConsumption);
-            console.log("User has been added to smart contract!");
-            let response = await fetch("/api/add_new_user", {
-                method: 'POST',
-                body: JSON.stringify({
-                    type: type,
-                    title: title,
-                    address: window.web3.eth.defaultAccount
-                }),
-                headers: new Headers()
-            });
-            let json = await response.json();
-            if(json.error){
-                alert("Error occurred while adding user to a server");
-                console.log(json)
-            }else{
-                console.log("User has been added to the server!");
-                await window.homepage.update()
-            }
+            let offer_id = await to_promise(window.contract.addNewOffer, power, from, to, {value: reward, from: window.defaultAccount, gas: 3000000});
+            console.log("Offer was created, tx hash", offer_id);
+            window.homepage.hide_create_offer();
         }catch(e){
-            alert("Error occurred while adding user to smart contract");
+            alert("Error occurred while creating offer user to smart contract");
             console.log(e)
         }
         event.persist()
@@ -80,15 +60,15 @@ class CreateOfferForm extends React.Component {
 
                             <legend className="uk-legend">New Offer</legend>
                             <div className="uk-margin">
-                                <p>Balance: {window.homepage.state.user_data.balance}</p>
+                                <p><b>Balance: </b>{window.homepage.state.user_data.balance} ETH</p>
                             </div>
                             <div className="uk-margin">
-                                <span>Power:</span>
+                                <span>Power(kW):</span>
                                 <input className="uk-input" name = 'power' type="number" onChange={this.handleInputChange}/>
                             </div>
                             <div className="uk-margin">
-                                <span>Reward: </span>
-                                <input className="uk-input" name = 'power' type="number" onChange={this.handleInputChange}/>
+                                <span>Reward(ETH): </span>
+                                <input className="uk-input" name = 'reward' type="number" onChange={this.handleInputChange}/>
                             </div>
                             <div className="uk-margin">
                                 <span>Start time:</span>

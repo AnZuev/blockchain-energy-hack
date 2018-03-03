@@ -15,7 +15,7 @@ const web3 = require("web3");
 let libs = require("../etc/libs");
 const config = require("../config.json");
 let timer = null;
-let time = 0;
+let time = 1;
 
 module.exports.start = () => {
     if(!timer){
@@ -31,7 +31,7 @@ module.exports.start = () => {
                 console.error("Error while time updates on smart contract");
                 console.error(err)
             }
-            time += 10;
+            time += 1;
         }, 30000)
     }else{
         console.log("Timer is on already")

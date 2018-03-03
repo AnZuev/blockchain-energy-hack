@@ -37,11 +37,11 @@ class HomePage extends React.Component {
     }
 
     show_create_offer(){
-        this.state.show_create_offer = true;
+        this.setState({show_create_offer: true})
     }
 
     hide_create_offer(){
-        this.state.show_create_offer = false;
+        this.setState({show_create_offer: false})
     }
 
     setStateAsync(state) {
@@ -193,7 +193,6 @@ class HomePage extends React.Component {
                             <Header
                                 is_a_new_user={this.state.checks.is_a_new_user_on_server}
                                 is_telegram_connected={this.state.user_data.from_backend.telegram !== null}
-                                telegram_alias={this.state.user_data.from_backend.telegram.alias}
                             />
                             <CreateOfferForm/>
                         </div>

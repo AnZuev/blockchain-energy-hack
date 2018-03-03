@@ -93,13 +93,28 @@ class HomePageContent extends React.Component {
         await this.setStateAsync({loading: loading});
 
         try{
-            let available_offers_ids = await to_promise(window.contract.getAvailableOffers, -1);
+            let available_offers_ids = await to_promise(window.contract.getAvailableOffers, 0, {from: window.defaultAccount, gas: 3000000});
             let available_offers = [];
             console.info("Available offers loaded", available_offers);
-            available_offers_ids.map(async (item) => {
-                let offer = await to_promise(window.contract.getOfferInfo, item);
+            for(let i = 0; i < available_offers_ids.length; i++){
+                let item = available_offers_ids[i];
+                let offer_list = await to_promise(window.contract.getOfferInfo, item, {from: window.defaultAccount, gas: 3000000});
+                //address initiator, uint neededPower, uint promisedPower, uint numOfPromisingUsers, uint reward, uint from, uint to
+                let offer = {
+                    id: item,
+                    initiator: offer_list[0],
+                    neededPower: offer_list[1].toString(),
+                    promisedPower: offer_list[2].toString(),
+                    numOfPromisingUsers: offer_list[3].toString(),
+                    reward: offer_list[4].toString(),
+                    from: offer_list[5].toString(),
+                    to: offer_list[6].toString(),
+                    initiator_name: offer_list[7]
+                };
                 available_offers.push(offer);
-            })
+            }
+            data.available_offers = available_offers;
+
         }catch(err){
             console.error("Error occurred while getting available offers");
             console.error(err);

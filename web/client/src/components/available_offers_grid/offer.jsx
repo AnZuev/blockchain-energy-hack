@@ -21,15 +21,15 @@ class Offer extends React.Component {
             <div>
                     <div className="uk-card uk-card-hover uk-card-default uk-card-body uk-clearfix">
                         <h3 className="uk-card-title">#{this.props.id}</h3>
-                        <p>
-                            {this.props.description}
-                        </p>
+
                         <p>
                             <b>From:</b> {this.props.from} <br/>
                             <b>To:</b> {this.props.to}<br/>
                             <b>Residual power:</b> {this.props.residual_power} kW<br/>
                             <b>Total power:</b> {this.props.total_power} kW<br/>
-                            <b>Total reward:</b> {this.props.total_reward} wei
+                            <b>Total reward:</b> {this.props.total_reward} wei <br/>
+                            Created by <b>{this.props.initiator_name}</b>
+
                         </p>
                         <span className="uk-text-small uk-text-muted">{this.props.number_of_users} users in business</span>
                         <p className="uk-button uk-button-primary uk-align-right "
