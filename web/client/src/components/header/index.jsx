@@ -54,6 +54,7 @@ class Header extends React.Component {
 
     handle_connect_telegram(){
         // TODO: implement
+        window.homepage.show_telegram_form();
     }
     render () {
         if(this.props.is_a_new_user){
@@ -93,7 +94,7 @@ class Header extends React.Component {
                     </div>
                     <div className="uk-navbar-right">
                         <div className="uk-navbar-item">
-                            <div className="uk-button" onClick={this.handle_connect_telegram}>Connect telegram</div>
+                            <div className="uk-button uk-button-primary" onClick={this.handle_connect_telegram}>Connect telegram</div>
                         </div>
                         <div className="uk-navbar-item">
                             <div className="uk-button uk-button-primary" onClick={this.handle_create_offer}>Create offer</div>

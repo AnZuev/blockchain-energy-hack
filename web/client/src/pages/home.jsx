@@ -5,7 +5,7 @@ import Header from '../components/header/index.jsx'
 import Error from "../components/error/index.jsx"
 import HomePageContent from "../components/homepage_content/index.jsx"
 import CreateOfferForm from "../components/create_offer_form/index.jsx"
-
+import ConnectTelegramForm from "../components/connect_telegram_form/index.jsx";
 
 
 class HomePage extends React.Component {
@@ -14,7 +14,7 @@ class HomePage extends React.Component {
         this.state = {
             checks: {
                 is_metamask_installed: HomePage.check_metamask_installation(),
-                is_network_id_is_correct: HomePage.check_network_id(),
+                is_network_id_is_correct: true,
                 is_a_new_user_on_smart_contract: true,
                 is_a_new_user_on_server: false
             },
@@ -22,7 +22,8 @@ class HomePage extends React.Component {
                 from_backend: null,
                 from_smart_contract: null
             },
-            show_create_offer: false
+            show_create_offer: false,
+            show_telegram_form: false
         };
     }
 
@@ -42,6 +43,14 @@ class HomePage extends React.Component {
 
     hide_create_offer(){
         this.setState({show_create_offer: false})
+    }
+
+    show_telegram_form() {
+        this.setState({show_telegram_form: true})
+    }
+
+    hide_telegram_form() {
+        this.setState({show_telegram_form: false})
     }
 
     setStateAsync(state) {
@@ -144,7 +153,7 @@ class HomePage extends React.Component {
                     />
                     <Error
                         message = "It seems that you are connected to Kovan Test Network."
-                        solution = "Just change the network to Kovan Test Network in MetaMask:)"
+                        solution = "Just change the network to localhost in MetaMask:)"
                     />
                 </div>
             )
@@ -197,7 +206,19 @@ class HomePage extends React.Component {
                             <CreateOfferForm/>
                         </div>
                     )
-                }else{
+                }
+                else if(this.state.show_telegram_form) {
+                    return(
+                        <div>
+                            <Header
+                                is_a_new_user={this.state.checks.is_a_new_user_on_server}
+                                is_telegram_connected={this.state.user_data.from_backend.telegram !== null}
+                            />
+                            <ConnectTelegramForm/>
+                        </div>
+                    )
+                }
+                else{
                     return(
                         <div>
                             <Header

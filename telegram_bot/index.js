@@ -13,8 +13,18 @@
 const config = require("../config.json");
 const contract = require("../core/index")();
 let libs = require("../etc/libs");
+let time_updater = require("../etc/smart_contract_time_updater");
 
 var users = {};
+
+//let currentOffers = [{id: 1, startTime: 10, endTime: 20, power: 5, address: '0x000'}, {id: 2, startTime: 30, endTime: 40, power: 5, address: '0x000'},]; // a variable for notifications
+let currentOffers = [];
+let event = contract.OfferResponded();
+event.watch((err, res)=> {
+    currentOffers.push(res.args);
+});
+
+
 
 console.log("Starting telegram bot...");
 
@@ -29,42 +39,59 @@ bot.start((ctx) => {
 bot.command('secret', (ctx) => {
     let secretNumber = 1000 + Math.floor(Math.random() * 9000);
     if (!(ctx.from.id in users)) {
-        users[ctx.from.id] = {'secretNumber': secretNumber, 'context': ctx, 'isConnected': false};
-        ctx.reply('Your secret number is ' + secretNumber + ' . To connect your Telegram account, go to the website and enter it there.');
+        users[ctx.from.id] = {'secretNumber': secretNumber, 'context': ctx, 'isConnected': false, 'address': ''};
+        ctx.reply('Your secret number is ' + secretNumber + '. To connect your Telegram account, go to the website and enter it there.');
     }
     else {
         ctx.reply("You've already got a secret number.");
     }
 
     const timer = setInterval(() => {
+        console.log('before');
+        console.log(users[ctx.from.id]['isConnected']);
         users[ctx.from.id]['isConnected'] = checkIfUserHasConnected(secretNumber);
+        console.log('after');
+        console.log(users[ctx.from.id]['isConnected']);
         if (users[ctx.from.id]['isConnected']) {
             clearInterval(timer);
             console.log('timer cleared');
+            users[ctx.from.id]['address'] = getUserAddress(secretNumber);
             return ctx.reply("You're connected! Click /remind if you wish to be reminded of the offers you've taken.");
         }
-    }, 10000);
+    }, 100);
 
 });
 
 bot.command('remind', (ctx) => {
-    setInterval( () => {
-        let currentOffer = getUserClosestOffer(users[ctx.from.id].secretNumber);
-        if (currentOffer !== undefined) {
-
-        }
+    const timer = setInterval(() => {
+        currentOffers.map((offer, index) => {
+            if (offer['address'].toString() === users[ctx.from.id]['address']) {
+                if (Number(offer.startTime.toString()) - time_updater.get_time() < 20) {
+                    ctx.reply("Don't forget! From " + offer.startTime.toString() + " to " + offer.endTime.toString() + " your consumption should decrease by " +
+                        offer.power.toString() + ". Go to the website to turn off your devices.");
+                    currentOffers.splice(index, 1);
+                }
+            }
+        });
     }, 10000);
+
 
 });
 
-async function getUserClosestOffer(secretNumber) {
-    return await libs.to_promise(contract.TG_getClosestOffer, secretNumber, {from: global.observer_ethereum_address});
-}
 
 async function checkIfUserHasConnected(secretNumber) {
     let result = await libs.to_promise(contract.checkIsUserHasConnected, secretNumber, {from: global.observer_ethereum_address});
-    if (result.toString() === 'true') return true;
-    else return false;
+
+    console.log("checking connection");
+    console.log(result.toString() === 'true');
+    return result.toString() === 'true';
+}
+
+async function getUserAddress(secretNumber) {
+    let result = await libs.to_promise(contract.getAddress, secretNumber, {from: global.observer_ethereum_address});
+    console.log("getting user address");
+    console.log(result);
+    return result.toString();
 }
 
 bot.startPolling();

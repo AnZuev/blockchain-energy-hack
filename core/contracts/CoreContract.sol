@@ -56,7 +56,7 @@ contract CoreContract {
     uint256 time;
 
 
-    function CoreContract() public{
+    function CoreContract() public {
         owner = msg.sender;
         time = 0;
     }
@@ -81,8 +81,8 @@ contract CoreContract {
     }
 
     // for telegram shit (by Sonya)
-    function addNewSecretNum(uint number, address adr) public {
-        secretNumbersTG[number] = adr;
+    function addNewSecretNum(uint number) public {
+        secretNumbersTG[number] = msg.sender;
     }
 
     //for telegram shit (by Sonya)
@@ -91,8 +91,8 @@ contract CoreContract {
     }
 
     //for telegram shit (by Sonya)
-    function checkIsUserHasConnected(uint number) public returns(bool) {
-        if (secretNumbersTG[number] != 0x0000000000000000000000000000000000000000) {
+    function checkIsUserHasConnected(uint number) public view returns(bool) {
+        if (secretNumbersTG[number] != address(0)) {
             return true;
         }
         else {

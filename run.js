@@ -14,7 +14,7 @@ global.observer_ethereum_address = require("./config.json").ethereum.observer.ad
 
 
 // start bot
-//require('./telegram_bot/index');
+require('./telegram_bot/index');
 
 // start web-server
 require('./web/backend/index');

@@ -32,12 +32,11 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "telegraf": "^3.19.0",
-    "truffle": "^4.1.0",
     "web3": "^0.20.1",
     "webpack": "^4.0.1"
   },
   "devDependencies": {
-    "webpack-cli": "^2.0.9"
+    "webpack-cli": "^2.0.10"
   },
   "scripts": {
     "dev": "webpack -d --watch",
