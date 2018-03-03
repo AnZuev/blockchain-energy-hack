@@ -25,7 +25,7 @@ class Offer extends React.Component {
                         <p>
                             <b>From:</b> {this.props.from} <br/>
                             <b>To:</b> {this.props.to}<br/>
-                            <b>Residual power:</b> {this.props.residual_power} kW<br/>
+                            <b>Remaining power:</b> {this.props.residual_power} kW<br/>
                             <b>Total power:</b> {this.props.total_power} kW<br/>
                             <b>Total reward:</b> {this.props.total_reward} wei <br/>
                             Created by <b>{this.props.initiator_name}</b>

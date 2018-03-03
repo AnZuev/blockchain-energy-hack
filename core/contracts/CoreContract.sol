@@ -2,9 +2,12 @@ pragma solidity ^0.4.19;
 
 contract CoreContract {
 
-    event OfferCreated(
+    event OfferResponded(
         uint offer_id,
-        uint time
+        uint startTime,
+        uint endTime,
+        uint promisedPower,
+        address user_address
     );
 
     struct Peer {
@@ -131,7 +134,6 @@ contract CoreContract {
         numberOfOffers = numberOfOffers + 1;
         users[initiator].balance += reward;
         offers[numberOfOffers] = Offer({initiator: initiator, neededPower: power, reward: reward, startTime: startTime, endTime: endTime});
-        OfferCreated(numberOfOffers, time);
     }
 
     // returns array of offer ids
@@ -151,9 +153,16 @@ contract CoreContract {
     }
 
 
-    function respondToOffer(uint id, address user, uint power) public {
+    // uint offer_id,
+    // uint startTime,
+    // uint endTime,
+    // uint promisedPower,
+    // address user_address
+    function respondToOffer(uint id, uint power) public {
+        address user = msg.sender;
         consumptionPromises[id].push(ConsPromise({promisingUser: user, promisedPower: power}));
         userOffers[user].push(id);
+        OfferResponded(id, getOfferStart(id), getOfferEnd(id), getOfferPower(id), user);
     }
 
     // promise getters

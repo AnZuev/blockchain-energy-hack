@@ -35,18 +35,20 @@ class ModalSection extends React.Component {
         console.log("ModalSection handle submit called");
         await this.setStateAsync({loading: true});
         let close_button = event.target.parentNode.firstChild;
-        console.log(close_button);
-        await setTimeout(async () => {
-            await this.setStateAsync({loading: false});
-            UIkit.notification({
-                message: 'You can find your offer in On-Going offers',
-                timeout: 5000,
-                status: 'success',
-                pos: 'bottom-center'
-            });
-            close_button.click()
-        }, 2000);
 
+        console.log(Number(this.props.id));
+
+        console.log(this.state.range_value * 100);
+
+        await to_promise(window.contract.respondToOffer, Number(this.props.id), this.state.range_value*100, {from: window.defaultAccount, gas: 3000000});
+        await this.setStateAsync({loading: false});
+        UIkit.notification({
+            message: 'You can find your offer in On-Going offers',
+            timeout: 5000,
+            status: 'success',
+            pos: 'bottom-center'
+        });
+        close_button.click()
     }
 
     handleRangeChange(event) {
