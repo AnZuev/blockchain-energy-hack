@@ -15,9 +15,7 @@ import Offer from "./offer.jsx"
 class HistoryOffers extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            no_offers: this.props.offers.length === 0
-        }
+
     }
 
     setStateAsync(state) {
@@ -30,15 +28,14 @@ class HistoryOffers extends React.Component {
 
         if(this.props.is_loading){
             return (
-                <div className="uk-child-width-expand@m uk-text-center ">
+                <div className="uk-grid uk-child-width-expand@m uk-text-center ">
                     <div uk-spinner=""></div>
-                    <p className="uk-padding uk-text-muted">History is being loaded...</p>
                 </div>
             )
         }
-        if(this.state.no_offers){
+        if(this.props.offers.length === 0){
             return (
-                <div className="uk-child-width-expand@m uk-text-center ">
+                <div className="uk-grid uk-child-width-expand@m uk-text-center ">
                     <p className="uk-padding uk-text-muted">You haven't finished any offer yet. May be it's time to choose one?</p>
                 </div>
             )
@@ -52,7 +49,7 @@ class HistoryOffers extends React.Component {
                     to={item.to}
                     expected_power_consumption={item.expected_power_consumption}
                     real_power_consumption={item.real_power_consumption}
-                    reward={item.reward}
+                    reward={Number(item.reward) / 1000000000}
                 />;
                 offers.push(t);
             });

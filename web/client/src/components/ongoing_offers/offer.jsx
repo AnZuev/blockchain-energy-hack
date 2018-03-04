@@ -16,10 +16,12 @@ class Offer extends React.Component {
     }
 
     render () {
-        // TODO: implement it
         // if started - uk-text-success
         // otherwise no class is required
         let status = <td className="">Not started</td>
+        if(this.props.is_started){
+            status = <td className="uk-text-success">In progress</td>
+        }
 
         return (
             <tr>

@@ -23,6 +23,7 @@ class Header extends React.Component {
 
     async componentDidMount(){
         let time = (await to_promise(window.contract.getTime)).toString();
+        window.time = Number(time);
         await this.setStateAsync({time: time});
         this.init_time_update();
         console.log(time);

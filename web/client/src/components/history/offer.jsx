@@ -31,9 +31,9 @@ class Offer extends React.Component {
                 <td>{this.props.id}</td>
                 <td>{this.props.from}</td>
                 <td>{this.props.to}</td>
-                <td>{this.props.expected_power_consumption} kW</td>
-                <td>{this.props.real_power_consumption} kW</td>
-                <td>{this.props.reward}</td>
+                <td>{this.props.expected_power_consumption} W</td>
+                <td>{this.props.real_power_consumption} W</td>
+                <td>{this.props.reward} gwei</td>
                 {status}
             </tr>
         )
