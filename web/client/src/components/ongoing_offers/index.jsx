@@ -15,9 +15,6 @@ import Offer from "./offer.jsx"
 class OngoingOffers extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            no_offers: this.props.offers.length === 0
-        }
     }
 
     setStateAsync(state) {
@@ -30,28 +27,28 @@ class OngoingOffers extends React.Component {
 
         if(this.props.is_loading){
             return (
-                <div className="uk-child-width-expand@m uk-text-center ">
+                <div className="uk-grid uk-child-width-expand@m uk-text-center " uk-grid="">
                     <div uk-spinner=""></div>
                     <p className="uk-padding uk-text-muted">Future offers that you have accepted are being loaded...</p>
                 </div>
             )
         }
-        if(this.state.no_offers){
+        if(this.props.offers.length === 0){
             return (
-                <div className="uk-child-width-expand@m uk-text-center ">
+                <div className="uk-grid uk-child-width-expand@m uk-text-center " uk-grid="">
                     <p className="uk-padding uk-text-muted">You don't have any on-going offers yet.</p>
                 </div>
             )
         }else{
             let offers = [];
-            // TODO: how to computer expected reward (depends on smart contract)
+            // TODO: implement expected power consumption logic
             this.props.offers.map((item) => {
                 let t = <Offer
                     key={item.id}
                     id={item.id}
                     from={item.from}
                     to={item.to}
-                    expected_power_consumption={item.expected_power_consumption}
+                    expected_power_consumption=""
                 />;
                 offers.push(t);
             });

@@ -57,7 +57,7 @@ class AvailableOffersGrid extends React.Component {
         console.log(offers);
         if(this.props.is_loading){
             return (
-                <div className="uk-child-width-expand@m uk-text-center " uk-grid="">
+                <div className="uk-grid uk-child-width-expand@m uk-text-center " uk-grid="">
                     <div uk-spinner="">{}</div>
                     <p className="uk-padding uk-text-muted">Available offers are being loaded...</p>
                 </div>

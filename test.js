@@ -6,15 +6,12 @@ global.observer_ethereum_address = require("./config.json").ethereum.observer.ad
 
 
 async function f() {
-    //let offer_id = await libs.to_promise(contract.getAvailableOffers, 0, {from: global.observer_ethereum_address, gas: 3000000});
-    //let offer = await libs.to_promise(contract.getOfferInfo, offer_id, {from: global.observer_ethereum_address, gas: 3000000});
-
-    let event = contract.OfferResponded();
+    let event = contract.OfferIdMention();
     event.watch((err, res)=> {
         console.log(err, res);
     });
+    let offers_id = await libs.to_promise(contract.getOngoingOffers, {from: global.observer_ethereum_address, gas: 3000000});
+    console.log(offers_id);
 
-    //let result = await libs.to_promise(contract.getTime, {from: global.observer_ethereum_address});
-    //console.log(offer)
 }
-f();
+f()

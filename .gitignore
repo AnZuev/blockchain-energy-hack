@@ -1,4 +1,5 @@
 node_modules/
 .idea/
 core/build
-web/client/public/js
+web/client/public/js/home-bundle.js
+web/client/public/js/monitoring-bundle.js

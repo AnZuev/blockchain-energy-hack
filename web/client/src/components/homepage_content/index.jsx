@@ -26,20 +26,7 @@ class HomePageContent extends React.Component {
             },
             data:{
                 available_offers: [],
-                on_going_offers: [
-                    {
-                        id: 1,
-                        from: "28.02.2018 18:00",
-                        to: "28.02.2018 20:00",
-                        expected_power_consumption: 4
-                    },
-                    {
-                        id: 2,
-                        from: "29.02.2018 14:00",
-                        to: "29.02.2018 18:00",
-                        expected_power_consumption: 3
-                    }
-                ],
+                on_going_offers: [],
                 history: [
                     {
                         id: 1,
@@ -80,8 +67,37 @@ class HomePageContent extends React.Component {
     async get_on_going_offers(){
         let loading = this.state.loading;
         loading.on_going_offers = true;
+        let data = this.state.data;
         await this.setStateAsync({loading: loading});
-        //TODO: loading
+
+        try{
+            let ongoing_offers_ids = await to_promise(window.contract.getOngoingOffers, {from: window.defaultAccount, gas: 3000000});
+            let ongoing_offers = [];
+            console.info("Ongoing offers loaded", ongoing_offers_ids);
+            for(let i = 0; i < ongoing_offers_ids.length; i++){
+                let item = ongoing_offers_ids[i];
+                let offer_list = await to_promise(window.contract.getOfferInfo, item.toString(), {from: window.defaultAccount, gas: 3000000});
+                //address initiator, uint neededPower, uint promisedPower, uint numOfPromisingUsers, uint reward, uint from, uint to
+                let offer = {
+                    id: item.toString(),
+                    initiator: offer_list[0],
+                    neededPower: offer_list[1].toString(),
+                    promisedPower: offer_list[2].toString(),
+                    numOfPromisingUsers: offer_list[3].toString(),
+                    reward: offer_list[4].toString(),
+                    from: offer_list[5].toString(),
+                    to: offer_list[6].toString(),
+                    initiator_name: offer_list[7]
+                };
+                ongoing_offers.push(offer);
+            }
+            data.ongoing_offers = ongoing_offers;
+
+        }catch(err){
+            console.error("Error occurred while getting ongoing offers");
+            console.error(err);
+        }
+
         loading.on_going_offers = false;
         await this.setStateAsync({loading: loading});
 
