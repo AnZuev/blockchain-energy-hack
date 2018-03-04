@@ -10,7 +10,7 @@
 
 import React from 'react';
 
-class ModalSection extends React.Component {
+class UserProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -26,13 +26,14 @@ class ModalSection extends React.Component {
     }
 
     async componentDidMount(){
-        await getBalance();
+        await this.getBalance();
     }
 
     async getBalance() {
-        let balance = await to_promise(window.contract.getUserBalance, window.defaultAccount, {from: window.defaultAccount, gas: 3000000});
-        console.log(balance.toString());
-        if (Number(balance.toString) !== 0) {
+        // let balance = await to_promise(window.contract.getUserBalance, window.defaultAccount, {from: window.defaultAccount, gas: 3000000});
+        console.log("balance " + balance.toString());
+        let balance = 100;
+        if (Number(balance.toString()) !== 0) {
             await this.setStateAsync({show_active_button: true});
         }
         else await this.setStateAsync({show_active_button: false});
@@ -56,6 +57,7 @@ class ModalSection extends React.Component {
 
     render () {
         if (this.state.show_active_button) {
+            console.log("hey here");
             return (
                 <div>
                     <p>This is where you can receive money for all the offers you've responded to and fulfilled.</p>
@@ -74,4 +76,4 @@ class ModalSection extends React.Component {
     }
 }
 
-export default ModalSection
+export default UserProfile
