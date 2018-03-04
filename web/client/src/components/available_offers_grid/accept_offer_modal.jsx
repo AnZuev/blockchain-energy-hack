@@ -47,6 +47,7 @@ class ModalSection extends React.Component {
         });
         close_button.click();
         await window.homepage_content.get_offers();
+        await window.homepage_content.get_available_offers();
 
     }
 
@@ -67,6 +68,11 @@ class ModalSection extends React.Component {
         });
     }
     render () {
+        let limit = this.props.residual_power;
+        if(limit > this.props.usual_consumption){
+            limit = this.props.usual_consumption;
+        }
+
         let body = (
             <div className="uk-modal-body">
                 <p>
@@ -80,7 +86,7 @@ class ModalSection extends React.Component {
                            type="range"
                            defaultValue={this.state.range_value}
                            min="0"
-                           max={this.props.usual_power_consumption}
+                           max={limit}
                            step="20"
 
                     />

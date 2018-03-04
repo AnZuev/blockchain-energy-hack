@@ -43,7 +43,7 @@ class AvailableOffersGrid extends React.Component {
                 id={item.id.toString()}
                 initiator={item.initiator}
                 initiator_name={item.initiator_name.toString()}
-                residual_power ={item.neededPower - item.promisedPower}
+                residual_power ={(item.neededPower - item.promisedPower)}
                 total_power = {item.neededPower}
                 number_of_users={item.numOfPromisingUsers}
                 from={item.from}

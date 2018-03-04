@@ -31,6 +31,12 @@ class Offer extends React.Component {
                 <p>You are in</p>
             )
         }
+        let button = <p>You can't accept this offer anymore</p>;
+        if(this.props.residual_power > 0){
+            button = <p className="uk-button uk-button-primary uk-align-right "
+                        href={"#modal-section-" + this.props.id}
+                        uk-toggle="">More</p>;
+        }
         return (
             <div>
                     <div className="uk-card uk-card-hover uk-card-default uk-card-body uk-clearfix">
@@ -41,13 +47,11 @@ class Offer extends React.Component {
                             <b>To:</b> {this.props.to}<br/>
                             <b>Remaining power:</b> {this.props.residual_power} W<br/>
                             <b>Total power:</b> {this.props.total_power} W<br/>
-                            <b>Total reward:</b> {this.props.total_reward} wei <br/>
+                            <b>Total reward:</b> {this.props.total_reward/1000000000} gwei <br/>
                         </p>
                         {note}
                         <span className="uk-text-small uk-text-muted">{this.props.number_of_users} users in business</span>
-                        <p className="uk-button uk-button-primary uk-align-right "
-                           href={"#modal-section-" + this.props.id}
-                           uk-toggle="">More</p>
+                        {button}
                     </div>
 
                     <ModalSection
@@ -55,7 +59,7 @@ class Offer extends React.Component {
                         from={this.props.from}
                         to={this.props.to}
                         residual_power={this.props.residual_power}
-                        total_power={this.props.residual_power}
+                        total_power={this.props.total_power}
                         total_reward={this.props.total_reward}
                         usual_power_consumption={5000}
                         parent={this}

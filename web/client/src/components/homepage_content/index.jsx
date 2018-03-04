@@ -12,7 +12,8 @@ import React from 'react';
 import AvailableOffersGrid from '../available_offers_grid/index.jsx'
 import OngoingOffers from '../ongoing_offers/index.jsx'
 import History from "../history/index.jsx"
-import UserProfile from "../user_profile/profile.jsx"
+import UserProfile from "../user_profile/index.jsx"
+
 
 
 class HomePageContent extends React.Component {
@@ -89,11 +90,15 @@ class HomePageContent extends React.Component {
                     reward: offer_list[4].toString(),
                     from: Number(offer_list[5].toString()),
                     to: Number(offer_list[6].toString()),
-                    initiator_name: offer_list[7]
+                    initiator_name: offer_list[7],
+                    is_started: false
                 };
-                if(offer.to < window.time){
+                if(Number(offer.to) < window.time){
                     history.push(offer)
                 }else{
+                    if(Number(offer.from) < window.time){
+                        offer.is_started = true;
+                    }
                     let promised_power = await to_promise(window.contract.getPromisedPower, offer.id, window.defaultAccount, {from: window.defaultAccount, gas: 3000000});
                     offer.expected_power_consumption = promised_power.toString();
                     ongoing_offers.push(offer);

@@ -29,8 +29,8 @@ class CreateOfferForm extends React.Component {
 
     }
     async handleSubmit(event){
-        let reward = this.data.reward;
-        let power = this.data.power;
+        let reward = this.data.reward*1000000000;
+        let power = this.data.power*1000;
         let from = this.data.from;
         let to = this.data.to;
         console.log(this.data);
@@ -67,7 +67,7 @@ class CreateOfferForm extends React.Component {
                                 <input className="uk-input" name = 'power' type="number" onChange={this.handleInputChange}/>
                             </div>
                             <div className="uk-margin">
-                                <span>Reward(wei): </span>
+                                <span>Reward(gwei): </span>
                                 <input className="uk-input" name = 'reward' type="number" onChange={this.handleInputChange}/>
                             </div>
                             <div className="uk-margin">

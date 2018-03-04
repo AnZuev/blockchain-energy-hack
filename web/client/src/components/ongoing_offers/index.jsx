@@ -29,11 +29,9 @@ class OngoingOffers extends React.Component {
             return (
                 <div className="uk-grid uk-child-width-expand@m uk-text-center " uk-grid="">
                     <div uk-spinner=""></div>
-                    <p className="uk-padding uk-text-muted">Future offers that you have accepted are being loaded...</p>
                 </div>
             )
-        }
-        if(this.props.offers.length === 0){
+        }else if(this.props.offers.length === 0){
             return (
                 <div className="uk-grid uk-child-width-expand@m uk-text-center " uk-grid="">
                     <p className="uk-padding uk-text-muted">You don't have any on-going offers yet.</p>
@@ -52,6 +50,7 @@ class OngoingOffers extends React.Component {
                     to={item.to}
                     expected_power_consumption={item.expected_power_consumption}
                     is_accepted={item.is_accepted}
+                    is_started={item.is_started}
                 />;
                 offers.push(t);
             });
