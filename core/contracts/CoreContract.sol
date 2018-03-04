@@ -2,6 +2,9 @@ pragma solidity ^0.4.19;
 
 contract CoreContract {
 
+    event OfferIdMention(
+        uint id
+    );
     event OfferResponded(
         uint offer_id,
         uint startTime,
@@ -53,7 +56,7 @@ contract CoreContract {
 
     address public observer; // to listen for new offers
     address public owner; //just in case
-    uint256 time;
+    uint time;
 
 
     function CoreContract() public {
@@ -71,12 +74,12 @@ contract CoreContract {
         observer = obs;
     }
 
-    function updateTime(uint256 nextTime) public returns (uint256){
+    function updateTime(uint nextTime) public{
         //require(msg.sender == observer);
         time = nextTime;
     }
 
-    function getTime() public view returns (uint256){
+    function getTime() public view returns (uint){
         return time;
     }
 
@@ -150,6 +153,27 @@ contract CoreContract {
             }
         }
         return availableOffers;
+    }
+
+    function getOngoingOffers() public view returns(uint[]){
+        uint currentTime = time;
+        uint[] ongoingOffers;
+        address user = msg.sender;
+        uint[] user_offers = userOffers[user];
+        if(user_offers.length == 0){
+            return ongoingOffers;
+        }
+        for (uint i = 0; i <= user_offers.length; i++) {
+            uint f = user_offers[i];
+            uint startTime = offers[f].startTime;
+            uint endTime = offers[f].endTime;
+            /*if (startTime > currentTime) {
+                if(currentTime > endTime){
+                    //ongoingOffers.push(f);
+                }
+            }*/
+        }
+        return ongoingOffers;
     }
 
 

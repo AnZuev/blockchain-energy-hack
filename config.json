@@ -8,7 +8,7 @@
     "port": "5555"
   },
   "ethereum":{
-    "smart_contract_address": "1c73ecc6c384a94942a485e4422567d0799804df",
+    "smart_contract_address": "75076e4fbba61f65efb41d64e45cff340b1e518a",
     "node":{
       "protocol": "http",
       "host": "127.0.0.1",
@@ -16,7 +16,7 @@
       "network_id": "*"
     },
     "observer":{
-        "address": "4d53d6cf61a0578a549d2e50504bcf2f96923fc4"
+        "address": "C5fdf4076b8F3A5357c5E395ab970B5B54098Fef"
     }
   }
 }
