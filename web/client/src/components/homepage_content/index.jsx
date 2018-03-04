@@ -52,9 +52,8 @@ class HomePageContent extends React.Component {
 
     async componentDidMount(){
         //TODO: load everything
-        await this.get_on_going_offers();
+        await this.get_offers();
         await this.get_available_offers();
-        await this.get_history();
         await this.get_profile();
         window.homepage_content = this;
     }
@@ -64,18 +63,20 @@ class HomePageContent extends React.Component {
         });
     }
 
-    async get_on_going_offers(){
+    // for ongoing and history
+    async get_offers(){
         let loading = this.state.loading;
         loading.on_going_offers = true;
+        loading.history = true;
         let data = this.state.data;
         await this.setStateAsync({loading: loading});
 
         try{
-            let ongoing_offers_ids = await to_promise(window.contract.getOngoingOffers, {from: window.defaultAccount, gas: 3000000});
+            let offers_id = await to_promise(window.contract.getOffersByUser, {from: window.defaultAccount, gas: 3000000});
             let ongoing_offers = [];
-            console.info("Ongoing offers loaded", ongoing_offers_ids);
-            for(let i = 0; i < ongoing_offers_ids.length; i++){
-                let item = ongoing_offers_ids[i];
+            let history = [];
+            for(let i = 0; i < offers_id.length; i++){
+                let item = offers_id[i];
                 let offer_list = await to_promise(window.contract.getOfferInfo, item.toString(), {from: window.defaultAccount, gas: 3000000});
                 //address initiator, uint neededPower, uint promisedPower, uint numOfPromisingUsers, uint reward, uint from, uint to
                 let offer = {
@@ -85,13 +86,21 @@ class HomePageContent extends React.Component {
                     promisedPower: offer_list[2].toString(),
                     numOfPromisingUsers: offer_list[3].toString(),
                     reward: offer_list[4].toString(),
-                    from: offer_list[5].toString(),
-                    to: offer_list[6].toString(),
+                    from: Number(offer_list[5].toString()),
+                    to: Number(offer_list[6].toString()),
                     initiator_name: offer_list[7]
                 };
-                ongoing_offers.push(offer);
+                if(offer.to < window.time){
+                    history.push(offer)
+                }else{
+                    let promised_power = await to_promise(window.contract.getPromisedPower, offer.id, window.defaultAccount, {from: window.defaultAccount, gas: 3000000});
+                    offer.expected_power_consumption = promised_power.toString();
+                    ongoing_offers.push(offer);
+                }
             }
-            data.ongoing_offers = ongoing_offers;
+            data.on_going_offers = ongoing_offers;
+            data.history = history;
+            console.log(data);
 
         }catch(err){
             console.error("Error occurred while getting ongoing offers");
@@ -99,6 +108,7 @@ class HomePageContent extends React.Component {
         }
 
         loading.on_going_offers = false;
+        loading.history = false;
         await this.setStateAsync({loading: loading});
 
     }
@@ -111,9 +121,15 @@ class HomePageContent extends React.Component {
         try{
             let available_offers_ids = await to_promise(window.contract.getAvailableOffers, 0, {from: window.defaultAccount, gas: 3000000});
             let available_offers = [];
+            let user_offers = [];
+            this.state.data.on_going_offers.map((item) => {
+                user_offers.push(item.id);
+            })
+
             console.info("Available offers loaded", available_offers);
             for(let i = 0; i < available_offers_ids.length; i++){
                 let item = available_offers_ids[i];
+
                 let offer_list = await to_promise(window.contract.getOfferInfo, item, {from: window.defaultAccount, gas: 3000000});
                 //address initiator, uint neededPower, uint promisedPower, uint numOfPromisingUsers, uint reward, uint from, uint to
                 let offer = {
@@ -125,8 +141,12 @@ class HomePageContent extends React.Component {
                     reward: offer_list[4].toString(),
                     from: offer_list[5].toString(),
                     to: offer_list[6].toString(),
-                    initiator_name: offer_list[7]
+                    initiator_name: offer_list[7],
+                    is_accepted: false
                 };
+                if(user_offers.indexOf(item) >= 0){
+                    offer.is_accepted = true;
+                }
                 available_offers.push(offer);
             }
             data.available_offers = available_offers;
@@ -139,14 +159,7 @@ class HomePageContent extends React.Component {
         loading.available_offers = false;
         await this.setStateAsync({loading: loading, data: data});
     }
-    async get_history(){
-        let loading = this.state.loading;
-        loading.history = true;
-        await this.setStateAsync({loading: loading});
-        //TODO: loading
-        loading.history = false;
-        await this.setStateAsync({loading: loading});
-    }
+
     async get_profile(){
         let loading = this.state.loading;
         loading.profile = true;

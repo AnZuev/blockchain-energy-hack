@@ -42,13 +42,16 @@ class OngoingOffers extends React.Component {
         }else{
             let offers = [];
             // TODO: implement expected power consumption logic
+            console.log(this.props);
+
             this.props.offers.map((item) => {
                 let t = <Offer
                     key={item.id}
                     id={item.id}
                     from={item.from}
                     to={item.to}
-                    expected_power_consumption=""
+                    expected_power_consumption={item.expected_power_consumption}
+                    is_accepted={item.is_accepted}
                 />;
                 offers.push(t);
             });

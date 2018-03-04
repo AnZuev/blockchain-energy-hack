@@ -33,6 +33,7 @@ class Header extends React.Component {
             try{
                 console.log("updating time...");
                 let time = (await to_promise(window.contract.getTime)).toString();
+                window.time = Number(time);
                 await this.setStateAsync({time: time});
                 console.log(time);
             }catch(err){

@@ -39,11 +39,11 @@ class AvailableOffersGrid extends React.Component {
          */
         let offers = [];
         this.props.offers.map((item) => {
-            console.log(item);
             let t = <Offer
                 id={item.id.toString()}
+                initiator={item.initiator}
                 initiator_name={item.initiator_name.toString()}
-                residual_power ={item.neededPower*1.2 - item.promisedPower}
+                residual_power ={item.neededPower - item.promisedPower}
                 total_power = {item.neededPower}
                 number_of_users={item.numOfPromisingUsers}
                 from={item.from}
@@ -53,8 +53,6 @@ class AvailableOffersGrid extends React.Component {
             />;
             offers.push(t);
         });
-        console.log(this.props);
-        console.log(offers);
         if(this.props.is_loading){
             return (
                 <div className="uk-grid uk-child-width-expand@m uk-text-center " uk-grid="">

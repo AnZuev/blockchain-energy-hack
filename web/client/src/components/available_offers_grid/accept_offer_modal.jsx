@@ -14,7 +14,7 @@ class ModalSection extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            range_value: 1,
+            range_value: 1000,
             expected_power_consumption: Math.round((this.props.usual_power_consumption - 1) * 100)/100,
             error_message: "",
             loading: false
@@ -36,11 +36,8 @@ class ModalSection extends React.Component {
         await this.setStateAsync({loading: true});
         let close_button = event.target.parentNode.firstChild;
 
-        console.log(Number(this.props.id));
 
-        console.log(this.state.range_value * 100);
-
-        await to_promise(window.contract.respondToOffer, Number(this.props.id), this.state.range_value*100, {from: window.defaultAccount, gas: 3000000});
+        await to_promise(window.contract.respondToOffer, Number(this.props.id), this.state.range_value, {from: window.defaultAccount, gas: 3000000});
         await this.setStateAsync({loading: false});
         UIkit.notification({
             message: 'You can find your offer in On-Going offers',
@@ -48,13 +45,15 @@ class ModalSection extends React.Component {
             status: 'success',
             pos: 'bottom-center'
         });
-        close_button.click()
+        close_button.click();
+        await window.homepage_content.get_offers();
+
     }
 
     handleRangeChange(event) {
         let expected_power_consumption = Math.round((this.props.usual_power_consumption - event.target.value) * 100)/100;
         let error_message = " ";
-        if (expected_power_consumption < 1){
+        if (expected_power_consumption < 1000){
             error_message = "We hope you know what you are doing...";
             if(expected_power_consumption <= 0){
                 expected_power_consumption = 0;
@@ -82,13 +81,13 @@ class ModalSection extends React.Component {
                            defaultValue={this.state.range_value}
                            min="0"
                            max={this.props.usual_power_consumption}
-                           step="0.2"
+                           step="20"
 
                     />
                     <p className="uk-text">
-                        <b>Power reduce: </b>{this.state.range_value} kW <br/>
-                        <b>Expected power consumption: </b>{this.state.expected_power_consumption} kW <br/>
-                        <b>Expected reward: </b>{Math.round(this.props.total_reward * this.state.range_value/(this.props.total_power*1.1))} wei <br/>
+                        <b>Power reduce: </b>{this.state.range_value} W <br/>
+                        <b>Expected power consumption: </b>{this.state.expected_power_consumption} W <br/>
+                        <b>Expected reward: </b>{Math.round(this.props.total_reward * this.state.range_value/this.props.total_power/1000000000)} gwei <br/>
                         <span className="uk-text-danger">{this.state.error_message}</span>
                     </p>
                 </div>

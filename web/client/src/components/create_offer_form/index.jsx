@@ -67,7 +67,7 @@ class CreateOfferForm extends React.Component {
                                 <input className="uk-input" name = 'power' type="number" onChange={this.handleInputChange}/>
                             </div>
                             <div className="uk-margin">
-                                <span>Reward(ETH): </span>
+                                <span>Reward(wei): </span>
                                 <input className="uk-input" name = 'reward' type="number" onChange={this.handleInputChange}/>
                             </div>
                             <div className="uk-margin">
