@@ -77,10 +77,37 @@ contract CoreContract {
     function updateTime(uint nextTime) public{
         //require(msg.sender == observer);
         time = nextTime;
+        uint[] memory justFinished = getJustFinishedOffers(nextTime);
+        for (uint i = 0; i < justFinished.length; i++) {
+            address[] memory promisingUsers = getPromisingUsers(justFinished[i]);
+            for (uint j = 0; j < promisingUsers.length; j++) {
+                payToUser(promisingUsers[j], justFinished[i]);
+            }
+        }
+    }
+
+    function getJustFinishedOffers(uint time) public returns(uint[]) {
+        uint[] justFinished;
+        for (uint i = 0; i < numberOfOffers; i++) {
+            if (offers[i].endTime == (time-1)) {
+                justFinished.push(i);
+            }
+        }
+        return justFinished;
     }
 
     function getTime() public view returns (uint){
         return time;
+    }
+
+    function giveMoneyToUser(address user) public {
+        uint currentBalance = users[user].balance;
+        users[user].balance = 0;
+        user.transfer(currentBalance);
+    }
+
+    function getOffersByUser() public view returns(uint[]){
+        return userOffers[msg.sender];
     }
 
     // for telegram shit (by Sonya)
