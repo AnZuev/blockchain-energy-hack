@@ -12,6 +12,7 @@ import React from 'react';
 import AvailableOffersGrid from '../available_offers_grid/index.jsx'
 import OngoingOffers from '../ongoing_offers/index.jsx'
 import History from "../history/index.jsx"
+import UserProfile from "../user_profile/profile.jsx"
 
 
 class HomePageContent extends React.Component {
@@ -200,7 +201,7 @@ class HomePageContent extends React.Component {
                                 />
                             </li>
                             <li>
-                                Profile
+                                <UserProfile/>
                             </li>
                         </ul>
                     </div>

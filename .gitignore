@@ -3,3 +3,4 @@ node_modules/
 core/build
 web/client/public/js/home-bundle.js
 web/client/public/js/monitoring-bundle.js
+config.json

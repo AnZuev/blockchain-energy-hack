@@ -100,8 +100,8 @@ contract CoreContract {
         return time;
     }
 
-    function giveMoneyToUser(address user) public {
-        uint currentBalance = users[user].balance;
+    function giveMoneyToUser() public {
+        uint currentBalance = users[msg.sender].balance;
         users[user].balance = 0;
         user.transfer(currentBalance);
     }
