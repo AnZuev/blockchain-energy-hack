@@ -21,6 +21,8 @@ var users = {};
 let currentOffers = [];
 let event = contract.OfferResponded();
 event.watch((err, res)=> {
+    console.log(res.args);
+    console.log(res.args.startTime.toString());
     currentOffers.push(res.args);
 });
 
@@ -46,16 +48,12 @@ bot.command('secret', (ctx) => {
         ctx.reply("You've already got a secret number.");
     }
 
-    const timer = setInterval(() => {
-        console.log('before');
-        console.log(users[ctx.from.id]['isConnected']);
-        users[ctx.from.id]['isConnected'] = checkIfUserHasConnected(secretNumber);
-        console.log('after');
-        console.log(users[ctx.from.id]['isConnected']);
+    const timer = setInterval(async () => {
+        users[ctx.from.id]['isConnected'] = await checkIfUserHasConnected(secretNumber);
         if (users[ctx.from.id]['isConnected']) {
             clearInterval(timer);
             console.log('timer cleared');
-            users[ctx.from.id]['address'] = getUserAddress(secretNumber);
+            users[ctx.from.id]['address'] = await getUserAddress(secretNumber);
             return ctx.reply("You're connected! Click /remind if you wish to be reminded of the offers you've taken.");
         }
     }, 100);
@@ -65,10 +63,10 @@ bot.command('secret', (ctx) => {
 bot.command('remind', (ctx) => {
     const timer = setInterval(() => {
         currentOffers.map((offer, index) => {
-            if (offer['address'].toString() === users[ctx.from.id]['address']) {
+            if (offer['user_address'].toString() === users[ctx.from.id]['address']) {
                 if (Number(offer.startTime.toString()) - time_updater.get_time() < 20) {
-                    ctx.reply("Don't forget! From " + offer.startTime.toString() + " to " + offer.endTime.toString() + " your consumption should decrease by " +
-                        offer.power.toString() + ". Go to the website to turn off your devices.");
+                    ctx.reply("Don't forget about offer #" + offer['offer_id'] + "! From " + offer.startTime.toString() + " to " + offer.endTime.toString() + " your consumption should decrease by " +
+                        offer.promisedPower.toString() + ". Go to the website to turn off your devices.");
                     currentOffers.splice(index, 1);
                 }
             }
@@ -81,7 +79,6 @@ bot.command('remind', (ctx) => {
 
 async function checkIfUserHasConnected(secretNumber) {
     let result = await libs.to_promise(contract.checkIsUserHasConnected, secretNumber, {from: global.observer_ethereum_address});
-
     console.log("checking connection");
     console.log(result.toString() === 'true');
     return result.toString() === 'true';
