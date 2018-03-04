@@ -14,8 +14,9 @@ const config = require("../config.json");
 const contract = require("../core/index")();
 let libs = require("../etc/libs");
 let time_updater = require("../etc/smart_contract_time_updater");
+let storage = require("../storage/memory_storage");
 
-var users = {};
+let users = {};
 
 //let currentOffers = [{id: 1, startTime: 10, endTime: 20, power: 5, address: '0x000'}, {id: 2, startTime: 30, endTime: 40, power: 5, address: '0x000'},]; // a variable for notifications
 let currentOffers = [];
@@ -54,9 +55,10 @@ bot.command('secret', (ctx) => {
             clearInterval(timer);
             console.log('timer cleared');
             users[ctx.from.id]['address'] = await getUserAddress(secretNumber);
+            fillUserData(ctx, users[ctx.from.id].address);
             return ctx.reply("You're connected! Click /remind if you wish to be reminded of the offers you've taken.");
         }
-    }, 100);
+    }, 1000);
 
 });
 
@@ -94,3 +96,10 @@ async function getUserAddress(secretNumber) {
 bot.startPolling();
 
 console.log("Telegram bot has beed started");
+
+
+let fillUserData = (ctx, address) => {
+    let user = storage.getUser(address);
+    user.telegram = ctx.update.message.from;
+    storage.setUser(address, user);
+};

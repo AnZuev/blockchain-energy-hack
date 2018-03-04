@@ -167,40 +167,26 @@ contract CoreContract {
     }
 
     // returns array of offer ids
-    // pass currentTime=0 to get all future offers
+    // pass currentTime = 0 to get all future offers
+    // for now returns only 20 offers
+    // in the future offset could be introduced
     function getAvailableOffers(uint currentTime) public view returns(uint[]){
         if (currentTime == 0){
             currentTime = time + 1;
         }
 
-        uint[] availableOffers;
-        for (uint i = 0; i <= numberOfOffers; i++) {
+        uint[] memory availableOffers = new uint[](20);
+        uint pointer = 0;
+        for (uint i = 1; i <= numberOfOffers; i++) {
             if (offers[i].startTime > currentTime) {
-                availableOffers.push(i);
+                availableOffers[pointer] = i;
+                pointer += 1;
+                if(pointer == 20){
+                    return availableOffers;
+                }
             }
         }
         return availableOffers;
-    }
-
-    function getOngoingOffers() public view returns(uint[]){
-        uint currentTime = time;
-        uint[] ongoingOffers;
-        address user = msg.sender;
-        uint[] user_offers = userOffers[user];
-        if(user_offers.length == 0){
-            return ongoingOffers;
-        }
-        for (uint i = 0; i <= user_offers.length; i++) {
-            uint f = user_offers[i];
-            uint startTime = offers[f].startTime;
-            uint endTime = offers[f].endTime;
-            /*if (startTime > currentTime) {
-                if(currentTime > endTime){
-                    //ongoingOffers.push(f);
-                }
-            }*/
-        }
-        return ongoingOffers;
     }
 
 

@@ -28,6 +28,7 @@ class ConnectTelegramForm extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
 
     }
+
     async handleSubmit(event){
         let secretNumber = this.data.secretNumber;
         console.log(this.data);
@@ -35,6 +36,7 @@ class ConnectTelegramForm extends React.Component {
             let offer_id = await to_promise(window.contract.addNewSecretNum, secretNumber, {from: window.defaultAccount, gas: 3000000});
             console.log("Secret number has been added");
             window.homepage.hide_telegram_form();
+            await window.homepage.update();
         }catch(e){
             alert("Error occurred while secret number was being added");
             console.log(e)
@@ -48,6 +50,7 @@ class ConnectTelegramForm extends React.Component {
         const name = target.name;
         this.data[name] = event.target.value;
     }
+
     render () {
         return (
             <div className="uk-section uk-section-default" id="newUserForm" >
