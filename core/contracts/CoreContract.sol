@@ -135,7 +135,6 @@ contract CoreContract {
         address initiator = msg.sender;
         uint reward = msg.value;
         numberOfOffers = numberOfOffers + 1;
-        users[initiator].balance += reward;
         offers[numberOfOffers] = Offer({initiator: initiator, neededPower: power, reward: reward, startTime: startTime, endTime: endTime});
     }
 
