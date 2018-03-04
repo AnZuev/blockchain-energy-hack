@@ -86,10 +86,10 @@ contract CoreContract {
         }
     }
 
-    function getJustFinishedOffers(uint time) public returns(uint[]) {
+    function getJustFinishedOffers(uint currentTime) public returns(uint[]) {
         uint[] justFinished;
         for (uint i = 0; i < numberOfOffers; i++) {
-            if (offers[i].endTime == (time-1)) {
+            if (offers[i].endTime == (currentTime - 1)) {
                 justFinished.push(i);
             }
         }
@@ -101,6 +101,7 @@ contract CoreContract {
     }
 
     function giveMoneyToUser() public {
+        address user = msg.sender;
         uint currentBalance = users[msg.sender].balance;
         users[user].balance = 0;
         user.transfer(currentBalance);
@@ -212,7 +213,7 @@ contract CoreContract {
         address user = msg.sender;
         consumptionPromises[id].push(ConsPromise({promisingUser: user, promisedPower: power}));
         userOffers[user].push(id);
-        OfferResponded(id, getOfferStart(id), getOfferEnd(id), getOfferPower(id), user);
+        OfferResponded(id, getOfferStart(id), getOfferEnd(id), power, user);
     }
 
     // promise getters
