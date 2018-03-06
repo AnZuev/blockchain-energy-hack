@@ -71,7 +71,6 @@ class Header extends React.Component {
         if(this.props.is_telegram_connected){
             return (
                 <div className="uk-navbar-container" uk-navbar=""  id="header">
-                    <p>time</p>
                     <div className="uk-navbar-left">
                         <a href="" className="uk-navbar-item uk-logo">P2P Energy Network</a>
                     </div>
