@@ -20,9 +20,10 @@
 
     <script src="/js/web3.min.js"></script>
     <script type="text/javascript">
+        let host = "{{host}}";
         if(typeof window.web3 !== "undefined" && typeof window.web3.currentProvider !== "undefined") {
             let def_account = window.web3.eth.accounts[0];
-            window.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
+            window.web3 = new Web3(new Web3.providers.HttpProvider("http://eth.anzuev.ru:8545"));
             window.defaultAccount = def_account;
         }
         function to_promise(f, ...args){

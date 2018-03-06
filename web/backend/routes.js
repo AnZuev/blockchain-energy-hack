@@ -19,7 +19,10 @@ let router = new Router();
 
 
 router.get('/', async (ctx) => {
-    await ctx.render("home", { title : 'Home Page' })
+    await ctx.render("home", {
+        title : 'Home Page',
+        host: `${config.ethereum.node.protocol}://${config.ethereum.node.host}:${config.ethereum.node.port}`
+    });
 });
 
 router.get('/api/get_user', (ctx) => {

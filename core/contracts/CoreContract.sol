@@ -151,10 +151,10 @@ contract CoreContract {
         bool result = checkUserCons(user, offerId);
         if (result) {
             uint reward = offers[offerId].reward;
-            uint givenPower = getPromisedPower(offerId, user);
-            users[user].balance += (reward * givenPower);
+            users[user].balance += reward;
         }
     }
+
 
     // reward is actually an amount of ether that was sent by the user
     // at this point ethereum platform guarantees that user
@@ -300,8 +300,9 @@ contract CoreContract {
         }
     }
 
-    function addNewSlot(address userAddress, uint consumption, uint currentTime) public {
-        consumptionDB[currentTime].push(Slot(userAddress, consumption));
+    function addNewSlot(uint consumption) public {
+        require(consumption > 0);
+        consumptionDB[time].push(Slot(msg.sender, consumption));
     }
 
     function getUserBalance(address adr) public view returns(uint) {

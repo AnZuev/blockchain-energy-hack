@@ -30,8 +30,6 @@ module.exports = () => {
         let address = config.ethereum.smart_contract_address;
         contract = web3.eth.contract(abi).at(address);
 
-        //web3.eth.defaultAccount = web3.eth.accounts[0];
-
         console.log("Core module has been started");
         return contract
     }

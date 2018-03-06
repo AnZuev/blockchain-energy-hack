@@ -59,7 +59,9 @@ class ConnectTelegramForm extends React.Component {
                         <fieldset className="uk-fieldset">
 
                             <legend className="uk-legend">Connect your Telegram account</legend>
-
+                            <div className="uk-margin">
+                                Find a bot by alias: <a href="https://t.me/p2p_energy_network_bot">@p2p_energy_network_bot</a> and get a secret number.
+                            </div>
                             <div className="uk-margin">
                                 <span>Your secret number</span>
                                 <input className="uk-input" name = 'secretNumber' onChange={this.handleInputChange}/>

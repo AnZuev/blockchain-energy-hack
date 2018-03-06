@@ -56,11 +56,11 @@ class HomePageContent extends React.Component {
 
     // for ongoing and history
     async get_offers(){
-        let loading = this.state.loading;
-        loading.on_going_offers = true;
-        loading.history = true;
+        //let loading = this.state.loading;
+        //loading.on_going_offers = true;
+        //loading.history = true;
         let data = this.state.data;
-        await this.setStateAsync({loading: loading});
+        //await this.setStateAsync({loading: loading});
 
         try{
             let offers_id = await to_promise(window.contract.getOffersByUser, {from: window.defaultAccount, gas: 3000000});
@@ -85,7 +85,7 @@ class HomePageContent extends React.Component {
                 if(Number(offer.to) < window.time){
                     history.push(offer)
                 }else{
-                    if(Number(offer.from) < window.time){
+                    if(Number(offer.from) <= window.time){
                         offer.is_started = true;
                     }
                     let promised_power = await to_promise(window.contract.getPromisedPower, offer.id, window.defaultAccount, {from: window.defaultAccount, gas: 3000000});
@@ -102,16 +102,16 @@ class HomePageContent extends React.Component {
             console.error(err);
         }
 
-        loading.on_going_offers = false;
-        loading.history = false;
-        await this.setStateAsync({loading: loading});
+        //loading.on_going_offers = false;
+        //loading.history = false;
+        //await this.setStateAsync({loading: loading});
 
     }
     async get_available_offers(){
-        let loading = this.state.loading;
+        //let loading = this.state.loading;
         let data = this.state.data;
-        loading.available_offers = true;
-        await this.setStateAsync({loading: loading});
+        //loading.available_offers = true;
+        //await this.setStateAsync({loading: loading});
 
         try{
             let available_offers_ids = await to_promise(window.contract.getAvailableOffers, 0, {from: window.defaultAccount, gas: 3000000});
@@ -121,7 +121,7 @@ class HomePageContent extends React.Component {
                 user_offers.push(item.id);
             });
 
-            console.info("Available offers loaded", available_offers);
+            console.info("Available offers loaded", available_offers_ids);
             for(let i = 0; i < available_offers_ids.length; i++){
                 let item = available_offers_ids[i];
                 if(Number(item) === 0) continue;
@@ -151,9 +151,10 @@ class HomePageContent extends React.Component {
             console.error(err);
         }
         //TODO: loading
-        loading.available_offers = false;
-        await this.setStateAsync({loading: loading, data: data});
+        //loading.available_offers = false;
+        await this.setStateAsync({data: data});
     }
+
     async get_profile(){
         let loading = this.state.loading;
         loading.profile = true;

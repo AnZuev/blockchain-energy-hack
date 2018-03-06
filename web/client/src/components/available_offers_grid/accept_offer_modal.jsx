@@ -68,9 +68,12 @@ class ModalSection extends React.Component {
         });
     }
     render () {
-        let limit = this.props.residual_power;
-        if(limit > this.props.usual_consumption){
-            limit = this.props.usual_consumption;
+        let usual_consumption = 5000;
+        // TODO: max([from startTime up to endTime]);
+        let limit = Number(this.props.residual_power);
+        console.log(Number(this.props.residual_power), usual_consumption);
+        if(limit > usual_consumption){
+            limit = usual_consumption;
         }
 
         let body = (

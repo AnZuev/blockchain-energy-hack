@@ -76,7 +76,7 @@ class Header extends React.Component {
                     </div>
                     <div className="uk-navbar-right">
                         <div className="uk-navbar-item">
-                            Your telegram: {this.props.telegram_alias}
+                            Your telegram: @{this.props.telegram_alias}
                         </div>
                         <div className="uk-navbar-item">
                             <div className="uk-button uk-button-primary">Create offer</div>
