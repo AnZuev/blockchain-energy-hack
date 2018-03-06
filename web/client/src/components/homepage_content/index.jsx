@@ -63,12 +63,12 @@ class HomePageContent extends React.Component {
         //await this.setStateAsync({loading: loading});
 
         try{
-            let offers_id = await to_promise(window.contract.getOffersByUser, {from: window.defaultAccount, gas: 3000000});
+            let offers_id = await to_promise(window.contract.getOffersByUser, {from: window.defaultAccount, gas: 300000000});
             let ongoing_offers = [];
             let history = [];
             for(let i = 0; i < offers_id.length; i++){
                 let item = offers_id[i];
-                let offer_list = await to_promise(window.contract.getOfferInfo, item.toString(), {from: window.defaultAccount, gas: 3000000});
+                let offer_list = await to_promise(window.contract.getOfferInfo, item.toString(), {from: window.defaultAccount, gas: 300000000});
                 //address initiator, uint neededPower, uint promisedPower, uint numOfPromisingUsers, uint reward, uint from, uint to
                 let offer = {
                     id: item.toString(),

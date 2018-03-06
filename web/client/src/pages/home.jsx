@@ -68,7 +68,10 @@ class HomePage extends React.Component {
     async update(){
         let is_a_new_user_on_smart_contract;
         try{
-             is_a_new_user_on_smart_contract = await HomePage.check_user_existence_on_smart_contract();
+            console.log("Starting checkUserExistence");
+            is_a_new_user_on_smart_contract = await HomePage.check_user_existence_on_smart_contract();
+            console.log("Finished checkUserExistence");
+
         }catch (err){
             console.log(err);
             return;
@@ -114,8 +117,7 @@ class HomePage extends React.Component {
         // true if there is a user
         // otherwise false
         if (HomePage.check_metamask_installation() && HomePage.check_network_id()) {
-            //TODO: load data from smart contract
-            return (await to_promise(window.contract.checkUserExistence));
+            return (await to_promise(window.contract.checkUserExistence, {from: window.defaultAccount, gas: 3000000}));
         }
         return false
     }
@@ -232,7 +234,11 @@ class HomePage extends React.Component {
 
             }
         }
-        return <div>Return </div>
+        return  (<div className="uk-grid uk-child-width-expand@m uk-text-center ">
+            <div className="uk-section">
+                <div uk-spinner=""></div>
+            </div>
+        </div>)
 
     }
 }

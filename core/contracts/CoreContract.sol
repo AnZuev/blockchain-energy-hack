@@ -78,6 +78,9 @@ contract CoreContract {
         time = nextTime;
         uint[] memory justFinished = getJustFinishedOffers(nextTime);
         for (uint i = 0; i < justFinished.length; i++) {
+            if(justFinished[i] == 0){
+                break;
+            }
             address[] memory promisingUsers = getPromisingUsers(justFinished[i]);
             for (uint j = 0; j < promisingUsers.length; j++) {
                 payToUser(promisingUsers[j], justFinished[i]);
@@ -85,11 +88,16 @@ contract CoreContract {
         }
     }
 
-    function getJustFinishedOffers(uint currentTime) public returns(uint[]) {
-        uint[] justFinished;
-        for (uint i = 0; i < numberOfOffers; i++) {
+    function getJustFinishedOffers(uint currentTime) public view returns(uint[]) {
+        uint[] memory justFinished = new uint[](20);
+        uint pointer = 0;
+        for (uint i = 1; i <= numberOfOffers; i++) {
             if (offers[i].endTime == (currentTime - 1)) {
-                justFinished.push(i);
+                justFinished[pointer] = i;
+                pointer += 1;
+                if(pointer == 20){
+                    return justFinished;
+                }
             }
         }
         return justFinished;

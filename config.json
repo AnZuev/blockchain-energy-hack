@@ -8,7 +8,7 @@
     "port": "5555"
   },
   "ethereum":{
-    "smart_contract_address": "c02c8bc546a491ad4a31bfeb2bd86fa3bb7bf37e",
+    "smart_contract_address": "76f2ffc2b946e2459c69c91ae3e4f99abc2f96f2",
     "node":{
       "protocol": "http",
       "host": "eth.anzuev.ru",
@@ -16,7 +16,7 @@
       "network_id": "*"
     },
     "observer":{
-        "address": "959fd7ef9089b7142b6b908dc3a8af7aa8ff0fa1"
+        "address": "4e90a36b45879f5bae71b57ad525e817afa54890"
     }
   }
 }

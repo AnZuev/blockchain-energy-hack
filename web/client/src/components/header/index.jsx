@@ -83,7 +83,7 @@ class Header extends React.Component {
                             Your telegram: @{this.props.telegram_alias}
                         </div>
                         <div className="uk-navbar-item">
-                            <div className="uk-button uk-button-primary">Create offer</div>
+                            <div className="uk-button uk-button-primary" onClick={this.handle_create_offer}>Create offer</div>
                         </div>
                         <div className="uk-navbar-item">Time: {this.state.time}</div>
                     </div>
