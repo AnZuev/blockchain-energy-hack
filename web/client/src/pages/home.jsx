@@ -63,6 +63,12 @@ class HomePage extends React.Component {
         await this.load_contract_abi();
         await this.update();
         window.homepage = this;
+        window.usual_consumption = [
+            3000, 3000, 3000, 3000, 3000, 3000,
+            4000, 5000, 10000, 8000, 8000, 7000,
+            7000, 7000, 7000, 8000, 8000, 10000,
+            9000, 8000, 6000, 6000, 4000, 3000,
+        ];
     }
 
     async update(){

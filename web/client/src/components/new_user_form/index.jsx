@@ -64,6 +64,8 @@ class NewUserForm extends React.Component {
             9000, 8000, 6000, 6000, 4000, 3000,
         ];
 
+
+
         try{
             await to_promise(window.contract.addNewUser, title, type, usualConsumption, {from: window.defaultAccount, gas: 3000000});
             console.log("User has been added to smart contract!");

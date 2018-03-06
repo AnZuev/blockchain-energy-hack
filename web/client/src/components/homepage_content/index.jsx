@@ -74,7 +74,7 @@ class HomePageContent extends React.Component {
                     id: item.toString(),
                     initiator: offer_list[0],
                     neededPower: offer_list[1].toString(),
-                    promisedPower: offer_list[2].toString(),
+                    promisedPower: Number(offer_list[2].toString()),
                     numOfPromisingUsers: offer_list[3].toString(),
                     reward: offer_list[4].toString(),
                     from: Number(offer_list[5].toString()),

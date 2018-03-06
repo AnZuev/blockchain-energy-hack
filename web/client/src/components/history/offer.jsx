@@ -43,6 +43,7 @@ class Offer extends React.Component {
     }
 
     render () {
+        console.log(this.props);
         let status;
         if(this.state.is_succeed){
             status = <td className="uk-text-success">Succeed</td>
@@ -55,7 +56,7 @@ class Offer extends React.Component {
                 <td>{this.props.id}</td>
                 <td>{this.props.from}</td>
                 <td>{this.props.to}</td>
-                <td>{this.props.reward} gwei</td>
+                <td>{this.props.reward*this.props.promised_power} gwei</td>
                 {status}
             </tr>
         )

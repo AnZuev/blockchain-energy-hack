@@ -154,11 +154,12 @@ contract CoreContract {
         return true;
     }
 
+    //
     function payToUser(address user, uint offerId) public {
         bool result = checkUserCons(user, offerId);
         if (result) {
             uint reward = offers[offerId].reward;
-            users[user].balance += reward;
+            users[user].balance += reward * getPromisedPower(offerId, user);
         }
     }
 
@@ -170,7 +171,8 @@ contract CoreContract {
         address initiator = msg.sender;
         uint reward = msg.value;
         numberOfOffers = numberOfOffers + 1;
-        offers[numberOfOffers] = Offer({initiator: initiator, neededPower: power, reward: reward, startTime: startTime, endTime: endTime});
+        uint rewardPerWatt = reward/power;
+        offers[numberOfOffers] = Offer({initiator: initiator, neededPower: power, reward: rewardPerWatt, startTime: startTime, endTime: endTime});
     }
 
     // returns array of offer ids

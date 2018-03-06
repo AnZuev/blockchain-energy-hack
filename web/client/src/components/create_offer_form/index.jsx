@@ -17,7 +17,9 @@ class CreateOfferForm extends React.Component {
         this.state = {
             errors:{
 
-            }
+            },
+            total_reward: 0,
+            power: 0
         };
 
         this.data = {
@@ -29,7 +31,7 @@ class CreateOfferForm extends React.Component {
 
     }
     async handleSubmit(event){
-        let reward = this.data.reward*1000000000;
+        let reward = this.state.reward * this.state.power*1000000000 * 1000;
         let power = this.data.power*1000;
         let from = this.data.from;
         let to = this.data.to;
@@ -50,6 +52,12 @@ class CreateOfferForm extends React.Component {
         const target = event.target;
         const name = target.name;
         this.data[name] = event.target.value;
+        if(name === 'reward'){
+            this.setState({reward: Number(event.target.value)})
+        }
+        if(name === 'power'){
+            this.setState({power: Number(event.target.value)});
+        }
     }
     render () {
         return (
@@ -67,8 +75,9 @@ class CreateOfferForm extends React.Component {
                                 <input className="uk-input" name = 'power' type="number" onChange={this.handleInputChange}/>
                             </div>
                             <div className="uk-margin">
-                                <span>Reward(gwei): </span>
+                                <span>Reward per Watt(gwei): </span>
                                 <input className="uk-input" name = 'reward' type="number" onChange={this.handleInputChange}/>
+                                <span className="uk-text-muted">Total reward(gwei): {(this.state.reward * this.state.power * 1000) || 0}</span>
                             </div>
                             <div className="uk-margin">
                                 <span>Start time:</span>

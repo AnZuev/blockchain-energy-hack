@@ -29,6 +29,7 @@ class Offer extends React.Component {
                 <td>{this.props.from}</td>
                 <td>{this.props.to}</td>
                 <td>{this.props.expected_power_consumption} kW</td>
+                <td>{this.props.promisedPower * this.props.reward/1000000000} gwei</td>
                 {status}
             </tr>
         )

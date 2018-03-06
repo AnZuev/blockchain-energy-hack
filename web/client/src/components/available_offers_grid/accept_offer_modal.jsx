@@ -68,7 +68,7 @@ class ModalSection extends React.Component {
         });
     }
     render () {
-        let usual_consumption = 5000;
+        let usual_consumption = window.usual_consumption[window.time%24];
         // TODO: max([from startTime up to endTime]);
         let limit = Number(this.props.residual_power);
         if(limit > usual_consumption){
@@ -94,8 +94,8 @@ class ModalSection extends React.Component {
                     />
                     <p className="uk-text">
                         <b>Power reduce: </b>{this.state.range_value} W <br/>
-                        <b>Expected power consumption: </b>{this.state.expected_power_consumption} W <br/>
-                        <b>Expected reward: </b>{Math.round(this.props.total_reward * this.state.range_value/this.props.total_power/1000000000)} gwei <br/>
+                        <b>Expected power consumption:</b> less than {this.state.expected_power_consumption} W <br/>
+                        <b>Expected reward: </b>{Math.round(this.props.total_reward * this.state.range_value/1000000000)} gwei <br/>
                         <span className="uk-text-danger">{this.state.error_message}</span>
                     </p>
                 </div>

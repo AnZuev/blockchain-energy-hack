@@ -47,7 +47,7 @@ class Offer extends React.Component {
                             <b>To:</b> {this.props.to}<br/>
                             <b>Remaining power:</b> {this.props.residual_power} W<br/>
                             <b>Total power:</b> {this.props.total_power} W<br/>
-                            <b>Total reward:</b> {this.props.total_reward/1000000000} gwei <br/>
+                            <b>Total reward:</b> {this.props.total_reward/1000000000} gwei/Watt <br/>
                         </p>
                         {note}
                         <span className="uk-text-small uk-text-muted">{this.props.number_of_users} users in business</span>
@@ -61,7 +61,7 @@ class Offer extends React.Component {
                         residual_power={this.props.residual_power}
                         total_power={this.props.total_power}
                         total_reward={this.props.total_reward}
-                        usual_power_consumption={5000}
+                        usual_power_consumption={window.usual_consumption[window.time%24]}
                         parent={this}
                     />
                 </div>

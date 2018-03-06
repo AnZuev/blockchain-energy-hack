@@ -48,8 +48,8 @@ class HistoryOffers extends React.Component {
                     from={item.from}
                     to={item.to}
                     expected_power_consumption={item.expected_power_consumption}
-                    real_power_consumption={item.real_power_consumption}
                     reward={Number(item.reward) / 1000000000}
+                    promised_power={item.promisedPower}
                 />;
                 offers.push(t);
             });
