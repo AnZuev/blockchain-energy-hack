@@ -22,18 +22,18 @@ module.exports.start = () => {
         timer = setInterval(async ()=>{
             try{
                 // returns tx hash
-                time = Number(await libs.to_promise(contract.getTime, {from: global.observer_ethereum_address}));
+                time = Number(await libs.to_promise(contract.getTime, {from: global.observer_ethereum_address, gas: 3000000}));
                 time += 1;
                 let result = await libs.to_promise(contract.updateTime, time, {from: global.observer_ethereum_address, gas: 3000000});
                 console.log(result);
                 console.log("Time has been updated. Now: ", time);
-                let timeS = await libs.to_promise(contract.getTime, {from: global.observer_ethereum_address});
+                let timeS = await libs.to_promise(contract.getTime, {from: global.observer_ethereum_address, gas: 3000000});
                 console.log(timeS.toString())
             }catch (err){
                 console.error("Error while time updates on smart contract");
                 console.error(err)
             }
-        }, 10000)
+        }, 15000)
     }else{
         console.log("Timer is on already")
     }

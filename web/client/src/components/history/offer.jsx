@@ -13,14 +13,38 @@ import React from 'react';
 class Offer extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            is_succeed: false
+        }
+    }
+
+    async componentDidMount(){
+        await this.get_status();
+    }
+
+    async get_status(){
+        console.log("Getting status for the history offer with id", this.props.id);
+        try{
+            let result = await to_promise(window.contract.checkUserCons, window.defaultAccount, this.props.id, {
+                from: window.defaultAccount,
+                gas: 30000000
+            });
+            console.log(result);
+            if(result){
+                this.setState({
+                    is_succeed: true
+                })
+            }
+        }catch(err){
+            console.error("An error has occurred while getting info about history offer with id", this.props.id);
+            console.error(err);
+        }
+        console.log("Getting status of the history offer is finished");
     }
 
     render () {
-        // TODO: implement it
-        // if started - uk-text-success
-        // otherwise no class is required
         let status;
-        if(this.props.real_power_consumption - this.props.expected_power_consumption <= 0){
+        if(this.state.is_succeed){
             status = <td className="uk-text-success">Succeed</td>
         }else{
             status = <td className="uk-text-danger">Failed</td>
@@ -31,8 +55,6 @@ class Offer extends React.Component {
                 <td>{this.props.id}</td>
                 <td>{this.props.from}</td>
                 <td>{this.props.to}</td>
-                <td>{this.props.expected_power_consumption} W</td>
-                <td>{this.props.real_power_consumption} W</td>
                 <td>{this.props.reward} gwei</td>
                 {status}
             </tr>

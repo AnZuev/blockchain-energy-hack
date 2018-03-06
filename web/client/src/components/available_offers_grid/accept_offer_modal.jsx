@@ -71,7 +71,6 @@ class ModalSection extends React.Component {
         let usual_consumption = 5000;
         // TODO: max([from startTime up to endTime]);
         let limit = Number(this.props.residual_power);
-        console.log(Number(this.props.residual_power), usual_consumption);
         if(limit > usual_consumption){
             limit = usual_consumption;
         }

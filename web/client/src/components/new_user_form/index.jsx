@@ -58,10 +58,10 @@ class NewUserForm extends React.Component {
 
         // TODO: allow user to set his power consumption
         let usualConsumption = [
-            4, 4, 4, 4, 4, 4,
-            5, 5, 5, 7, 7, 7,
-            7, 7, 4, 5, 4, 4,
-            4, 4, 3, 3, 2, 1
+            3000, 3000, 3000, 3000, 3000, 3000,
+            4000, 5000, 10000, 8000, 8000, 7000,
+            7000, 7000, 7000, 8000, 8000, 10000,
+            9000, 8000, 6000, 6000, 4000, 3000,
         ];
 
         try{

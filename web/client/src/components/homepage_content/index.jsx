@@ -43,7 +43,7 @@ class HomePageContent extends React.Component {
             await this.get_available_offers();
         };
         update();
-        setInterval(update, 60000);
+        setInterval(update, 10000);
         window.homepage_content = this;
 
 

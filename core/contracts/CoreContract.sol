@@ -64,7 +64,6 @@ contract CoreContract {
         time = 0;
     }
 
-
     function getOwner() public view returns(address){
         return owner;
     }
@@ -132,7 +131,7 @@ contract CoreContract {
     }
 
     // check user consumption
-    function checkUserCons(address user, uint offerId) public returns(bool) {
+    function checkUserCons(address user, uint offerId) public view returns(bool) {
         uint startTime = offers[offerId].startTime;
         uint endTime = offers[offerId].endTime;
         uint promisedReduct = getPromisedPower(offerId, user);
@@ -172,7 +171,7 @@ contract CoreContract {
     // in the future offset could be introduced
     function getAvailableOffers(uint currentTime) public view returns(uint[]){
         if (currentTime == 0){
-            currentTime = time + 1;
+            currentTime = time;
         }
 
         uint[] memory availableOffers = new uint[](20);

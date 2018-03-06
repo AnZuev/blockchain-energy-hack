@@ -61,8 +61,6 @@ class HistoryOffers extends React.Component {
                                 <th>#</th>
                                 <th>From</th>
                                 <th>To</th>
-                                <th>Expected power consumption limit</th>
-                                <th>Real power consumption limit</th>
                                 <th>Reward</th>
                                 <th>Status</th>
                             </tr>

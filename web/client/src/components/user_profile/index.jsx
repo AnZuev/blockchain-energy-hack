@@ -52,6 +52,20 @@ class UserProfile extends React.Component {
         else await this.setStateAsync({show_active_button: false});
     }
 
+    async update_user_consumption(){
+        console.log("Updating user consumption...");
+        try{
+            console.log('--- current consumption is', this.state.current_consumption);
+            await to_promise(window.contract.addNewSlot, this.state.current_consumption, {
+                from: window.defaultAccount,
+                gas: 3000000
+            })
+        }catch (err){
+            console.error("Error occurred while updating user consumption");
+            console.error(err);
+        }
+        console.log("Updating user consumtion finished.");
+    }
 
     async handleGetMoney(event) {
         event.persist();
@@ -75,8 +89,8 @@ class UserProfile extends React.Component {
     }
 
     render () {
-        let slider = (<div className="uk-padding">
-            <p className="uk-text-lead">Your current consumption: </p>
+        let slider = (<div className="uk-padding" style={{maxWidth: 600 + 'px'}}>
+            <p className="uk-text-lead">Your current power consumption: {this.state.current_consumption} W</p>
             <p>Choose your consumption</p>
             <input className="uk-range"
                    onChange={this.handleRangeChange}

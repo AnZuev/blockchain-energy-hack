@@ -34,7 +34,11 @@ class Header extends React.Component {
             try{
                 console.log("updating time...");
                 let time = (await to_promise(window.contract.getTime)).toString();
+                let prev_time = window.time;
                 window.time = Number(time);
+                if(prev_time !== window.time){
+                    await window.profile.update_user_consumption();
+                }
                 await this.setStateAsync({time: time});
                 console.log(time);
             }catch(err){
