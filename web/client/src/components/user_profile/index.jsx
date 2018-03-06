@@ -35,7 +35,7 @@ class UserProfile extends React.Component {
     }
 
     async getBalance() {
-        let balance = await to_promise(window.contract.getUserBalance, window.defaultAccount, {from: window.defaultAccount, gas: 3000000});
+        let balance = await to_promise(window.contract.getUserBalance, window.defaultAccount, {from: window.defaultAccount});
         let wei = await to_promise(window.web3.eth.getBalance, window.defaultAccount);
         let ether = window.web3.fromWei(wei.toString(), 'ether');
         await this.setStateAsync({user_balance_on_blockchain: balance.toString(), user_balance_ether: ether.toString()});

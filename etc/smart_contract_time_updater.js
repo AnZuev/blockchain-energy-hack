@@ -24,7 +24,7 @@ module.exports.start = () => {
                 // returns tx hash
                 time = Number(await libs.to_promise(contract.getTime, {from: global.observer_ethereum_address}));
                 time += 1;
-                let result = await libs.to_promise(contract.updateTime, time, {from: global.observer_ethereum_address});
+                let result = await libs.to_promise(contract.updateTime, time, {from: global.observer_ethereum_address, gas: 3000000});
                 console.log(result);
                 console.log("Time has been updated. Now: ", time);
                 let timeS = await libs.to_promise(contract.getTime, {from: global.observer_ethereum_address});
